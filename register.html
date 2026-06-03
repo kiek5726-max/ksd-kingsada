@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ລົງທະບຽນສະມາຊິກ - ກິ່ງສະດາ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Noto Sans Lao', sans-serif !important; box-sizing: border-box; }
+        body { background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .register-card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+        h2 { color: #333; margin-bottom: 25px; }
+        .input-group input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #e0e0e0; border-radius: 10px; transition: 0.3s; }
+        .input-group input:focus { border-color: #27ae60; outline: none; }
+        .submit-btn { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .submit-btn:hover { background: #219150; }
+    </style>
+</head>
+<body>
+
+<div class="register-card">
+    <h2>ລົງທະບຽນສະມາຊິກ</h2>
+    <form action="register.php" method="POST">
+        <div class="input-group">
+            <input type="text" name="username" placeholder="ຊື່ຜູ້ໃຊ້" required>
+        </div>
+        <div class="input-group">
+            <input type="email" name="email" placeholder="ອີເມວ" required>
+        </div>
+        <div class="input-group">
+            <input type="password" name="password" placeholder="ລະຫັດຜ່ານ" required>
+        </div>
+        <button type="submit" class="submit-btn">ລົງທະບຽນ</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ກະຕ່າສິນຄ້າ - KSD ກິ່ງສະດາ</title>
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        /* ຕົບແຕ່ງເພີ່ມເຕີມສະເພາະໜ້າກະຕ່າ */
+        .cart-page-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        .cart-table-section {
+            background-color: #1e293b;
+            padding: 20px;
+            border-radius: 12px;
+            color: white;
+        }
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .cart-table th, .cart-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+        .cart-table th {
+            color: #4cd137;
+        }
+        .cart-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-qty {
+            background-color: #475569;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .btn-del {
+            background: none;
+            border: none;
+            color: #ff4757;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        /* ສ່ວນສະຫຼຸບ ແລະ ຟອມສັ່ງຊື້ */
+        .checkout-section {
+            background-color: #0f172a;
+            padding: 25px;
+            border-radius: 12px;
+            color: white;
+            border: 1px solid #334155;
+            height: fit-content;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #475569;
+            background-color: #1e293b;
+            color: white;
+        }
+        .btn-confirm {
+            width: 100%;
+            background-color: #2ed573;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn-confirm:hover {
+            background-color: #26af5f;
+        }
+        @media (max-width: 768px) {
+            .cart-page-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body style="background-color: #0f172a;">
+
+    <div style="text-align: center; padding: 30px; color: white;">
+        <h2>🛒 ຕູ້ກະຕ່າສິນຄ້າຂອງທ່ານ</h2>
+        <p style="color: #94a3b8; margin-top: 5px;">ກວດສອບລາຍການສິນຄ້າ ແລະ ຕື່ມຂໍ້ມູນເພື່ອສັ່ງຊື້</p>
+        <a href="index.html" style="color: #38bdf8; text-decoration: none; display: inline-block; margin-top: 15px;">⬅️ ກັບໄປໜ້າຫຼັກເພື່ອເລືອກສິນຄ້າເພີ່ມ</a>
+    </div>
+
+    <div class="cart-page-container">
+        
+        <div class="cart-table-section">
+            <h3>ລາຍການສິນຄ້າໃນກະຕ່າ</h3>
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>ຮູບພາບ</th>
+                        <th>ຊື່ສິນຄ້າ</th>
+                        <th>ລາຄາ</th>
+                        <th>ຈຳນວນ</th>
+                        <th>ລວມ</th>
+                        <th>ຈັດການ</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-page-items">
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="checkout-section">
+            <h3>สรุปยอดเงิน</h3>
+            <hr style="border-color: #334155; margin: 15px 0;">
+            
+            <div style="display: flex; justify-content: space-between; font-size: 18px; margin-bottom: 20px;">
+                <span>ຍອດລວມທັງໝົດ:</span>
+                <span id="cart-page-total" style="color: #2ed573; font-weight: bold; font-size: 22px;">0 ກີບ</span>
+            </div>
+
+            <h3>📋 ຂໍ້ມູນການຈັດສົ່ງ</h3>
+            <form id="orderForm" onsubmit="submitOrder(event)" style="margin-top: 15px;">
+                <div class="form-group">
+                    <label>ຊື່ ແລະ ນາມສະກຸນ:</label>
+                    <input type="text" id="custName" required placeholder="ພິມຊື່ຂອງທ່ານ...">
+                </div>
+                <div class="form-group">
+                    <label>ເບີໂທລະສັບຕິດຕໍ່:</label>
+                    <input type="tel" id="custPhone" required placeholder="ຕົວຢ່າງ: 020 XXXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label>ທີ່ຢູ່ຈັດສົ່ງ (ບ້ານ, ເມືອງ, ແຂວງ):</label>
+                    <textarea id="custAddress" rows="3" required placeholder="ພິມທີ່ຢູ່ຈັດສົ່ງໃຫ້ລະອຽດ..."></textarea>
+                </div>
+                <button type="submit" class="btn-confirm">🛍️ ຢືນຢັນການສັ່ງຊື້</button>
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. ດຶງຂໍ້ມູນກະຕ່າຈາກ LocalStorage
+        let cart = JSON.parse(localStorage.getItem('ksd_cart')) || [];
+
+        // 2. ຟັງຊັນສະແດງຜົນສິນຄ້າໃນຕາຕະລາງ
+    // 1. ຟັງຊັນສະແດງຜົນສິນຄ້າໃນຕາຕະລາງ
+    function displayCartPage() {
+        const tableBody = document.getElementById('cart-page-items');
+        const totalSpan = document.getElementById('cart-page-total');
+        
+        // ດຶງຂໍ້ມູນຫຼ້າສຸດຈາກ LocalStorage
+        let cart = JSON.parse(localStorage.getItem('ksd_cart')) || [];
+        tableBody.innerHTML = '';
+        let totalMoney = 0;
+
+        if (cart.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#94a3b8; padding:30px;">ບໍ່ມີສິນຄ້າໃນກະຕ່າ</td></tr>`;
+            totalSpan.innerText = "0 ກີບ";
+            return;
+        }
+
+        cart.forEach(item => {
+            // ກວດສອບຄວາມຖືກຕ້ອງຂອງຕົວເລກ ປ້ອງກັນ NaN
+            let price = Number(item.price) || 0;
+            let qty = Number(item.quantity) || 1;
+            let itemTotal = price * qty;
+            totalMoney += itemTotal;
+
+            tableBody.innerHTML += `
+                <tr>
+                    <td style="width: 100px;">
+                        <img src="${item.image}" style="width: 70px; height: 70px; object-fit: cover; border-radius: 8px;" onerror="this.src='Image/KSD.png'">
+                    </td>
+                    <td style="max-width: 200px; word-break: break-all;"><strong>${item.name}</strong></td>
+                    <td>${price.toLocaleString()} ກີບ</td>
+                    <td>
+                        <div class="qty-control" style="display: flex; align-items: center; gap: 10px;">
+                            <button class="btn-qty" onclick="updatePageQty(${item.id}, -1)" style="background-color: #475569; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">-</button>
+                            <span style="font-weight: bold; color: white;">${qty}</span>
+                            <button class="btn-qty" onclick="updatePageQty(${item.id}, 1)" style="background-color: #475569; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">+</button>
+                        </div>
+                    </td>
+                    <td style="color:#2ed573; font-weight:bold;">${itemTotal.toLocaleString()} ກີບ</td>
+                    <td>
+                        <button class="btn-del" onclick="deletePageItem(${item.id})" style="background:none; border:none; color:#ff4757; cursor:pointer; font-size:18px;">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        totalSpan.innerText = totalMoney.toLocaleString() + " ກີບ";
+    }
+
+    // 2. ຟັງຊັນ ເພີ່ມ/ຫຼຸດ ຈຳນວນ
+    function updatePageQty(id, amount) {
+        let cart = JSON.parse(localStorage.getItem('ksd_cart')) || [];
+        const item = cart.find(i => i.id == id);
+        if (item) {
+            item.quantity = Number(item.quantity) + amount;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.id == id);
+            }
+        }
+        localStorage.setItem('ksd_cart', JSON.stringify(cart));
+        displayCartPage();
+    }
+
+    // 3. ຟັງຊັນ ລຶບສິນຄ້າອອກຈາກກະຕ່າ
+    function deletePageItem(id) {
+        let cart = JSON.parse(localStorage.getItem('ksd_cart')) || [];
+        cart = cart.filter(i => i.id != id);
+        localStorage.setItem('ksd_cart', JSON.stringify(cart));
+        displayCartPage();
+    }
+
+    // 4. ຟັງຊັນກົດຢືນຢັນການສັ່ງຊື້ (Submit Form)
+    function submitOrder(event) {
+        event.preventDefault();
+        let cart = JSON.parse(localStorage.getItem('ksd_cart')) || [];
+        
+        if (cart.length === 0) {
+            alert('❌ ບໍ່ມີສິນຄ້າໃນກະຕ່າ ເລືອກສິນຄ້າກ່ອນເດີ້ພວກນ້ອງ!');
+            return;
+        }
+
+        const name = document.getElementById('custName').value;
+        const phone = document.getElementById('custPhone').value;
+        
+        alert(`🎉 ສັ່ງຊື້ສຳເລັດແລ້ວ!\n\nคุณ: ${name}\nເບີໂທ: ${phone}\n\nຂອບໃຈທີ່ອຸດໜູນ KSD ກິ່ງສະດາ!`);
+        
+        localStorage.removeItem('ksd_cart');
+        document.getElementById('orderForm').reset();
+        displayCartPage();
+    }
+// 5. ຟັງຊັນກົດຢືນຢັນການສັ່ງຊື້ (Submit Form)
+        function submitOrder(event) {
+            event.preventDefault(); // ປ້ອງກັນບໍ່ໃຫ້ໜ້າເວັບຣີເຟຣດ
+            
+            if (cart.length === 0) {
+                alert('❌ ບໍ່ມີສິນຄ້າໃນກະຕ່າ ເລືອກສິນຄ້າກ່ອນເດີ້ພວກນ້ອງ!');
+                return;
+            }
+
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+
+            // ສະແດງຂໍ້ຄວາມສັ່ງຊື້ສຳເລັດ
+            alert(`🎉 ສັ່ງຊື້ສຳເລັດແລ້ວ!\n\nคุณ: ${name}\nເບີໂທ: ${phone}\n\nຂອບໃຈທີ່ອຸດໜູນ KSD ກິ່ງສະດາ!`);
+            
+            // ລ້າງກະຕ່າ
+            cart = [];
+            localStorage.setItem('ksd_cart', JSON.stringify(cart));
+            document.getElementById('orderForm').reset();
+            displayCartPage();
+        }
+        function addToCart(button) {
+    // ດຶງຂໍ້ມູນຈາກ attribute ຂອງປຸ່ມ
+    const id = button.getAttribute('data-id');
+    const name = button.getAttribute('data-name');
+    const price = button.getAttribute('data-price');
+    const image = button.getAttribute('data-image');
+
+    let cart = JSON.parse(localStorage.getItem('ksd_cart')) || [];
+    
+    // ກວດສອບວ່າມີສິນຄ້ານີ້ແລ້ວບໍ່
+    const existingItem = cart.find(item => item.id === id);
+    
+    if (existingItem) {
+        existingItem.quantity = Number(existingItem.quantity) + 1;
+    } else {
+        // ສົ່ງຂໍ້ມູນເຂົ້າກະຕ່າໃຫ້ຖືກຊື່
+        cart.push({
+            id: id,
+            name: name,
+            price: price,
+            image: image,
+            quantity: 1
+        });
+    }
+    
+    localStorage.setItem('ksd_cart', JSON.stringify(cart));
+    alert(`🛒 ເພີ່ມ "${name}" ເຂົ້າກະຕ່າຮຽບຮ້ອຍ!`);
+}
+
+        // ລັນຟັງຊັນທັນທີເວລາເປີດໜ້າ
+        document.addEventListener('DOMContentLoaded', displayCartPage)
+    // ລັນຟັງຊັນທັນທີເວລາເປີດໜ້າ
+    document.addEventListener('DOMContentLoaded', displayCartPage);
+
+        // 5. ຟັງຊັນກົດຢືນຢັນການສັ່ງຊື້ (Submit Form)
+        function submitOrder(event) {
+            event.preventDefault(); // ປ້ອງກັນບໍ່ໃຫ້ໜ້າເວັບຣີເຟຣດ
+            
+            if (cart.length === 0) {
+                alert('❌ ບໍ່ມີສິນຄ້າໃນກະຕ່າ ເລືອກສິນຄ້າກ່ອນເດີ້ພວກນ້ອງ!');
+                return;
+            }
+
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+
+            // ສະແດງຂໍ້ຄວາມສັ່ງຊື້ສຳເລັດ
+            alert(`🎉 ສັ່ງຊື້ສຳເລັດແລ້ວ!\n\nคุณ: ${name}\nເບີໂທ: ${phone}\n\nຂອບໃຈທີ່ອຸດໜູນ KSD ກິ່ງສະດາ!`);
+            
+            // ລ້າງກະຕ່າ
+            cart = [];
+            localStorage.setItem('ksd_cart', JSON.stringify(cart));
+            document.getElementById('orderForm').reset();
+            displayCartPage();
+        }
+         function loadCart() {
+              let cart = JSON.parse(localStorage.getItem('ksd_cart')) || [];
+              let tableBody = document.getElementById('cart-page-items');
+              let totalSpan = document.getElementById('cart-page-total');
+              let total = 0;
+
+              tableBody.innerHTML = ''; // ລຶບເກົ່າອອກ
+
+              cart.forEach(item => {
+              let price = Number(item.price); // ບັງຄັບເປັນຕົວເລກ
+              let subtotal = price * item.quantity;
+              total += subtotal;
+
+              tableBody.innerHTML += `
+                 <tr>
+                     <td><img src="${item.image}" width="50"></td>
+                     <td>${item.name}</td>
+                     <td>${price.toLocaleString()} ກີບ</td>
+                     <td>${item.quantity}</td>
+                     <td>${subtotal.toLocaleString()} ກີບ</td>
+                 </tr>
+        `;
+    });
+    totalSpan.innerText = total.toLocaleString() + " ກີບ";
+}
+        // ລັນຟັງຊັນທັນທີເວລາເປີດໜ້າ
+        document.addEventListener('DOMContentLoaded', displayCartPage);
+        // ໃນສ່ວນ JavaScript ຂອງ cart.html
+cart.forEach(item => {
+    // ໃຊ້ item.name, item.price, item.image ໃຫ້ກົງກັບທີ່ push ເຂົ້າໄປ
+    tableBody.innerHTML += `
+        <tr>
+            <td><img src="${item.image}" width="50"></td>
+            <td>${item.name}</td>
+            <td>${item.price.toLocaleString()} ກີບ</td>
+            <td>${item.quantity}</td>
+        </tr>
+    `;
+});
+function addToCart(name, price, image) {
+    let cart = JSON.parse(localStorage.getItem('ksd_cart')) || [];
+    
+    // ເພີ່ມສິນຄ້າໃໝ່ (ບັງຄັບລາຄາເປັນຕົວເລກສະເໝີ)
+    cart.push({
+        name: name,
+        price: Number(price),
+        image: image
+    });
+    
+    localStorage.setItem('ksd_cart', JSON.stringify(cart));
+    alert("ເພີ່ມ " + name + " ເຂົ້າກະຕ່າແລ້ວ!");
+}
+</script>
+</body>
+</html>

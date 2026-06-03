@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ສິນຄ້າທັງໝົດ - ກິ່ງສະດາ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;700&display=swap">
+</head>
+<body>
+
+  <header class="site-header">
+  <div class="header-container">
+    <nav class="nav-menu">
+      <ul>
+        <li><a href="index.html">ໜ້າຫຼັກ</a></li>
+        <li><a href="products.html">ສິນຄ້າ</a></li>
+        <li><a href="services.html">ບໍລິການ</a></li>
+        <li><a href="about.html">ກ່ຽວກັບເຮົາ</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+  <main class="main-content">
+    <div class="section-title">
+      <h2>ສິນຄ້າທັງໝົດ</h2>
+      <p>ເລືອກຊື້ສິນຄ້າຄຸນນະພາບດີໃນລາຄາພິເສດຈາກ ກິ່ງສະດາ</p>
+    </div>
+    
+    <div class="product-grid" id="dynamic-product-grid">
+      <div class="product-card">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-about">
+        <h3>ກ່ຽວກັບໂຄງການ</h3>
+        <p>ເວັບໄຊທ໌ນີ້ເປັນສ່ວນໜຶ່ງຂອງວິຊาຮຽນ ພັດທະນາຂຶ້ນມາເພື່ອທົດສອບການຈັດ Layout ແບບ Responsive Design ໃຫ້ຮອງຮັບທຸກອຸປະກອນ.</p>
+      </div>
+      <div class="footer-team">
+        <h3>DEV</h3>
+        <div class="team-grid">
+          <div class="member">
+            <img src="Image/Prosli.jpeg" alt="User Profile" class="profile-avatar">
+            <div class="member-info">
+              <p class="name">ທ้าວ ສຸກປະເສີດ ດວງບຸຜາ</p>
+              <p class="role">ເບີໂທ: +856 20 548 35745</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 ພັດທະນາໂດຍ ນ້ອງນັກສຶກສາ. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+</body>
+<div id="drag-contact-btn" class="circle-contact-link">
+    <span>ຕິດຕໍ່</span>
+  </div>
+
+  <script>
+    const dragBtn = document.getElementById("drag-contact-btn");
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    dragBtn.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - dragBtn.getBoundingClientRect().left;
+      offsetY = e.clientY - dragBtn.getBoundingClientRect().top;
+      dragBtn.style.cursor = "grabbing";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      
+      let x = e.clientX - offsetX;
+      let y = e.clientY - offsetY;
+
+      const maxX = window.innerWidth - dragBtn.offsetWidth;
+      const maxY = window.innerHeight - dragBtn.offsetHeight;
+      
+      x = Math.max(0, Math.min(x, maxX));
+      y = Math.max(0, Math.min(y, maxY));
+
+      dragBtn.style.left = x + "px";
+      dragBtn.style.top = y + "px";
+      dragBtn.style.right = "auto"; 
+      dragBtn.style.bottom = "auto";
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      dragBtn.style.cursor = "grab";
+    });
+
+    dragBtn.addEventListener("touchstart", (e) => {
+      isDragging = true;
+      const touch = e.touches[0];
+      offsetX = touch.clientX - dragBtn.getBoundingClientRect().left;
+      offsetY = touch.clientY - dragBtn.getBoundingClientRect().top;
+    });
+
+    document.addEventListener("touchmove", (e) => {
+      if (!isDragging) return;
+      const touch = e.touches[0];
+      let x = touch.clientX - offsetX;
+      let y = touch.clientY - offsetY;
+      
+      x = Math.max(0, Math.min(x, window.innerWidth - dragBtn.offsetWidth));
+      y = Math.max(0, Math.min(y, window.innerHeight - dragBtn.offsetHeight));
+
+      dragBtn.style.left = x + "px";
+      dragBtn.style.top = y + "px";
+      dragBtn.style.right = "auto";
+      dragBtn.style.bottom = "auto";
+    });
+
+    document.addEventListener("touchend", () => {
+      isDragging = false;
+    });
+
+    // 3. 🔥 ສ່ວນສຳຄັນ: ເມື່ອກົດ 2 ເທື່ອ (Double Click) ໃຫ້ລິ້ງຄ໌ໄປໜ້າ contact.html
+    dragBtn.addEventListener("dblclick", () => {
+      window.location.href = "contact.html";
+    });
+
+    // ຮອງຮັບການກົດ 2 ເທື່ອເທິງມືຖື (ເພາະມືຖືບໍ່ມີ Event dblclick ໂດຍກົງ)
+    let lastTap = 0;
+    dragBtn.addEventListener("touchend", (e) => {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      
+      // ຖ້າກົດຫ່າງກັນບໍ່ເກີນ 300 ມິນລິວິນາທີ (0.3 ວິນາທີ) ຖືວ່າເປັນການກົດ 2 ເທື່ອ
+      if (tapLength < 300 && tapLength > 0) {
+        window.location.href = "contact.html";
+      }
+      lastTap = currentTime;
+    });
+  </script>
+  <script>
+    // 1. ຂໍ້ມູນສິນຄ້າເລີ່ມຕົ້ນ (ກໍລະນີຫຼັງບ້ານຍັງຫວ່າງ)
+    const defaultProductsList = [
+      { id: 1, name: 'ນໍ້າໝາກພ້າວ ຊາດາ', price: 99000, desc: 'ນໍ້າໝາກພ້າວ ຫອມຫວານສົດຊື່ນ', image: '/xampp/htdocs/SOUKPASERT/Image/Coconut.jpeg' },
+      { id: 2, name: 'ນ້ຳມັນປາມກິ່ງສະດາ', price: 159000, desc: 'ບໍ່ວ່າຈະເປັນຜັດຈະທອດໄວ້ໃຈກິ່ງສະດ່າ', image: '/xampp/htdocs/SOUKPASERT/Image/ນ້ຳມັນ.jpeg' },
+      { id: 3, name: 'ນ້ຳອາໂລເວລ້າ', price: 99000, desc: 'ນ້ຳເຜິ້ງໝາກນາວພ້ອມເນື້ອຫວ້ານຫາງແຂ້ຫອມຫວານສົດຊື່ນ', image: '/xampp/htdocs/SOUKPASERT/Image/ອາໂລເວລາ.jpeg' },
+      { id: 4, name: 'ນ້ຳໝາກໄມ້ຊາດາ', price: 99000, desc: 'ນ້ຳໝາກໄມ້ຫອມຫວານຫລາຍລົດຊາດ', image: '/xampp/htdocs/SOUKPASERT/Image/3.jpg' }
+    ];
+
+    // 2. ຟັງຊັນດຶງຂໍ້ມູນມາສະແດງຜົນ
+    function renderFrontProducts() {
+      const frontProducts = JSON.parse(localStorage.getItem('backend_products')) || defaultProductsList;
+      const gridContainer = document.getElementById('dynamic-product-grid');
+      if(!gridContainer) return;
+      
+      gridContainer.innerHTML = '';
+      frontProducts.forEach(p => {
+        gridContainer.innerHTML += `
+          <div class="product-card">
+            <div class="product-img"><img src="${p.image}" alt="${p.name}"></div>
+            <div class="product-info">
+              <h3>${p.name}</h3>
+              <p class="price">${p.price.toLocaleString()} ກີບ</p>
+              <p class="desc">${p.desc}</p>
+              <button class="btn-buy" onclick="addToCart('${p.name}', ${p.price}, '${p.image}')">ເພີ່ມລົງກະຕ່າ</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // 3. ລະບົບຟັງຊັນການເພີ່ມລົງກະຕ່າສິນຄ້າ (ໃຫ້ເຊື່ອມກັບ LocalStorage ດຽວກັນ)
+    let cart = JSON.parse(localStorage.getItem('shopping_cart')) || [];
+    
+    function addToCart(name, price, image) {
+      let existingItem = cart.find(item => item.name === name);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ name, price, image, quantity: 1 });
+      }
+      saveCart();
+      if(typeof updateCartUI === 'function') updateCartUI(); // ຖ້າມີ Pop-up ກະຕ່າໃນໜ້ານີ້ໃຫ້ອັບເດດນຳ
+      alert('ເພີ່ມ ' + name + ' ລົງກະຕ່າຮຽບຮ້ອຍແລ້ວ!');
+    }
+
+    function saveCart() {
+      localStorage.setItem('shopping_cart', JSON.stringify(cart));
+    }
+    function addProduct(name, price) {
+    const db = getDatabase();
+    // ບັນທຶກລົງ Path 'products'
+    set(ref(db, 'products/' + Date.now()), {
+        name: name,
+        price: price
+    });
+}
+
+    // ລັນລະບົບສະແດງຜົນສິນຄ້າທັນທີຕອນເປີດໜ້າ products.html
+    renderFrontProducts();
+  </script>
+  <script type="module">
+  // ນຳເຂົ້າ Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+  // ວາງ Config ທີ່ກັອບປີ້ມາຈາກ Firebase ໃສ່ບ່ອນນີ້
+  const firebaseConfig = {
+    apiKey: "...",
+    authDomain: "...",
+    databaseURL: "...",
+    projectId: "...",
+    storageBucket: "...",
+    messagingSenderId: "...",
+    appId: "..."
+  };
+
+  // ເລີ່ມຕົ້ນເຊື່ອມຕໍ່
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // ຕອນນີ້ເຈົ້າສາມາດຂຽນ/ອ່ານຂໍ້ມູນໄດ້ແລ້ວ!
+</script>
+  </body>
+</html>

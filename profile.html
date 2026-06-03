@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+ <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;700&display=swap">
+    <style>
+        body { font-family: 'Noto Sans Lao', sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 20px; }
+        .profile-card { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgb(41, 41, 41); }
+        h2 { text-align: center; color: #004d17; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
+        .save-btn { width: 100%; padding: 12px; background: #006411; color: white; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="profile-card">
+        <h2>ຕັ້ງຄ່າບັນຊີ</h2>
+        <div class="input-group">
+    <label>ຮູບໂປຣໄຟລ໌</label>
+    <input type="file" id="imageInput" accept="image/*" onchange="previewImage(event)">
+    
+    <div id="imagePreviewContainer" style="margin-top: 10px;">
+        <img id="imagePreview" src="#" alt="Preview" 
+             style="display:none; width:150px; height:150px; border-radius:10px; object-fit:cover; border: 2px solid #ccc;">
+    </div>
+</div>
+        <div class="input-group"><label>ຊື່ ແລະ ນາມສະກຸນ</label><input type="text" id="nameInput"></div>
+        <div class="input-group"><label>ອາຍຸ</label><input type="number" id="ageInput"></div>
+        <div class="input-group"><label>ເບີໂທ</label><input type="tel" id="phoneInput"></div>
+        <div class="input-group"><label>ທີ່ຢູ່</label><input type="text" id="addressInput"></div>
+        <div class="input-group">
+    <label>ຍົດຂອງທ່ານ</label>
+    <select id="roleInput">
+        <option value="member">ສະມາຊິກ (Member)</option>
+    </select>
+</div>
+        <button class="save-btn" onclick="saveData()">ບັນທຶກຂໍ້ມູນ</button>
+    </div>
+
+    <script>
+        function saveData() {
+            localStorage.setItem('user_name', document.getElementById('nameInput').value);
+            localStorage.setItem('user_age', document.getElementById('ageInput').value);
+            localStorage.setItem('user_phone', document.getElementById('phoneInput').value);
+            localStorage.setItem('user_address', document.getElementById('addressInput').value);
+            
+            const file = document.getElementById('imageInput').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    localStorage.setItem('user_image', e.target.result);
+                    window.location.href = 'index.html';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+    <script>
+    // ເມື່ອໜ້າເວັບໂຫຼດສຳເລັດ, ໃຫ້ດຶງຂໍ້ມູນເກົ່າມາໃສ່ໃນຊ່ອງ Input
+    window.onload = function() {
+        if(localStorage.getItem('user_name')) {
+            document.getElementById('nameInput').value = localStorage.getItem('user_name');
+            document.getElementById('ageInput').value = localStorage.getItem('user_age');
+            document.getElementById('phoneInput').value = localStorage.getItem('user_phone');
+            document.getElementById('addressInput').value = localStorage.getItem('user_address');
+        }
+    };
+
+    // ຟັງຊັນບັນທຶກຂໍ້ມູນ (ຄືເກົ່າ)
+    function saveData() {
+        localStorage.setItem('user_name', document.getElementById('nameInput').value);
+        localStorage.setItem('user_age', document.getElementById('ageInput').value);
+        localStorage.setItem('user_phone', document.getElementById('phoneInput').value);
+        localStorage.setItem('user_address', document.getElementById('addressInput').value);
+        
+        // ບັນທຶກຮູບ (ຖ້າມີ)
+        const file = document.getElementById('imageInput').files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                localStorage.setItem('user_image', e.target.result);
+                window.location.href = 'index.html';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            window.location.href = 'index.html';
+        }
+    }
+</script>
+<script>
+    // 1. ສະແດງຮູບຕົວຢ່າງ
+    function previewImage(event) {
+        const reader = new FileReader();
+        const imagePreview = document.getElementById('imagePreview');
+        reader.onload = function() {
+            imagePreview.src = reader.result;
+            imagePreview.style.display = 'block';
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    // 2. ບັນທຶກທຸກຢ່າງໃນຄັ້ງດຽວ
+    function saveAllData() {
+        localStorage.setItem('user_name', document.getElementById('nameInput').value);
+        localStorage.setItem('user_age', document.getElementById('ageInput').value);
+        localStorage.setItem('user_phone', document.getElementById('phoneInput').value);
+        localStorage.setItem('user_address', document.getElementById('addressInput').value);
+        localStorage.setItem('user_role', document.getElementById('roleInput').value);
+        
+        // ບັນທຶກຮູບ (ຖ້າມີການເລືອກໃໝ່)
+        const file = document.getElementById('imageInput').files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                localStorage.setItem('user_image', e.target.result);
+                window.location.href = 'index.html'; // ປ່ຽນໜ້າ
+            };
+            reader.readAsDataURL(file);
+        } else {
+            window.location.href = 'index.html'; // ປ່ຽນໜ້າ
+        }
+    }
+    function saveAllData() {
+    const btn = document.querySelector('.save-btn');
+    
+    // ເພີ່ມລູກຫຼິ້ນ: ປ່ຽນຂໍ້ຄວາມ ແລະ ເຮັດໃຫ້ປຸ່ມກົດບໍ່ໄດ້ຊົ່ວຄາວ
+    btn.innerText = "ກຳລັງບັນທຶກ...";
+    btn.style.opacity = "0.7";
+    btn.disabled = true;
+
+    // ເອົາໂຄ້ດບັນທຶກທີ່ເຮົາເຮັດໄວ້ກ່ອນໜ້ານີ້ມາໃສ່...
+    localStorage.setItem('user_name', document.getElementById('nameInput').value);
+    // ... (ບັນທຶກຂໍ້ມູນອື່ນໆ) ...
+
+    // ຫຼັງຈາກບັນທຶກສຳເລັດ 3 ວິນາທີ (ຫຼື ປ່ຽນໜ້າ)
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, 1000);
+}
+
+    // 3. ໂຫຼດຂໍ້ມູນເກົ່າມາສະແດງ
+    window.onload = function() {
+        document.getElementById('nameInput').value = localStorage.getItem('user_name') || '';
+        document.getElementById('ageInput').value = localStorage.getItem('user_age') || '';
+        document.getElementById('phoneInput').value = localStorage.getItem('user_phone') || '';
+        document.getElementById('addressInput').value = localStorage.getItem('user_address') || '';
+        document.getElementById('roleInput').value = localStorage.getItem('user_role') || 'member';
+        
+        const savedImage = localStorage.getItem('user_image');
+        if (savedImage) {
+            const img = document.getElementById('imagePreview');
+            img.src = savedImage;
+            img.style.display = 'block';
+        }
+    };
+</script>
+</body>
+</html>

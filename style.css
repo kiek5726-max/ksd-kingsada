@@ -1,0 +1,648 @@
+/* --------------------------------------
+   Base Styles & Reset
+----------------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* ໃຊ້ Font Noto Sans Lao ແບບບໍ່ມີຫົວ ໃຫ້ຄວາມຮູ້ສຶກທັນສະໄໝ, ສະອາດ, ສະບາຍຕາ */
+  font-family: 'Noto Sans Lao', sans-serif;
+}
+
+body {
+  background-color: #f8fafc;
+  color: #334155;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --------------------------------------
+   2. Header Styles (Logo ຊ້າຍ, Menu ຂວາ + Hover)
+----------------------------------------- */
+.site-header {
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo h2 {
+  font-size: 24px;
+  color: #f0c400;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.logo h2 span {
+  color: #008d13;
+}
+
+.nav-menu ul {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+}
+
+.nav-menu ul li a {
+  text-decoration: none;
+  color: #158606;
+  font-weight: 500;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  padding-bottom: 5px;
+}
+
+/* Mouse Hover Effect */
+.nav-menu ul li a:hover {
+  color: #009b15;
+}
+
+.nav-menu ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #37c200;
+  transition: width 0.3s ease;
+}
+
+.nav-menu ul li a:hover::after {
+  width: 100%;
+}
+
+/* --------------------------------------
+   3. Banner Styles (ຮູບພາບພື້ນຫຼັງ)
+----------------------------------------- */
+.banner-section {
+  position: relative;
+  height: 450px;
+  /* ກັອບປີ້ແຖວນີ້ໄປວາງແທນແຖວທີ 91 ເລີຍເດີ້ */
+background-image: url('https://scontent.fvte4-1.fna.fbcdn.net/v/t39.30808-6/476229116_122139851036501220_6864280131673993903_n.png?stp=dst-png_s960x960&_nc_cat=100&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeHcL_UcL0gWUvra4l1gfcyNG_od4RDGUOIb-h3hEMZQ4vpOV198Hihnkx02iSC4kg0WSEvezdj2VbdVw2P6dHWo&_nc_ohc=b7O3mGA4t1YQ7kNvwEcQ0nX&_nc_oc=AdrHg0S9KJP8TE2DOj0HIZ8PjVcMA-n-wMUwDSYUJYMqy4VDQA6VKOiIxBHJyRUOINM&_nc_zt=23&_nc_ht=scontent.fvte4-1.fna&_nc_gid=HSlJC7lysd-9_X7tb2Wlow&_nc_ss=7b2a8&oh=00_Af9AK3_ds03PqTt0yPEEZV3Q4UZ60XHb06Mw5adtftmVvQ&oe=6A24AA24');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #ffffff;
+  padding: 0 20px;
+}
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+
+.banner-content h1 {
+  font-size: 40px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  line-height: 2.5;
+}
+
+.banner-content p {
+  font-size: 18px;
+  margin-bottom: 30px;
+  opacity: 0.9;
+  font-weight: 300;
+}
+
+.btn-banner {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #009e0d;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.btn-banner:hover {
+  background-color: #005018;
+}
+
+/* --------------------------------------
+   4. Main Content (Product Card Layout)
+----------------------------------------- */
+.main-content {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-title h2 {
+  font-size: 32px;
+  color: #1e293b;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.section-title p {
+  color: #64748b;
+  font-weight: 400;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.product-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.product-img img {
+  width: 100%;
+  height: 550px;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 20px;
+}
+
+.product-info h3 {
+  font-size: 18px;
+  color: #1e293b;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.price {
+  color: #f43f5e;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.desc {
+  font-size: 14px;
+  color: #292929;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+.btn-buy {
+  width: 100%;
+  padding: 10px;
+  background-color: #f1f5f9;
+  border: none;
+  color: #292929;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-buy:hover {
+  background-color: #125800;
+  color: #ffffff;
+}
+
+/* --------------------------------------
+   5. Footer Styles (ຈັດວາງຂໍ້ມູນນັກສຶກສາ)
+----------------------------------------- */
+.site-footer {
+  background-color: #0d2e1c;
+  color: #94a3b8;
+  padding: 60px 40px 20px;
+  margin-top: 60px;
+}
+
+.footer-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 50px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #0d2e1c;
+}
+
+.footer-about h3, .footer-team h3 {
+  color: #ffffff;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.footer-about p {
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.member {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: #0d2e1c;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.member img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffb618;
+}
+
+.member-info .name {
+  color: #ffffff;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.member-info .role {
+  font-size: 13px;
+  font-weight: 300;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+/* 5. ໜ້າຈໍ Phone Landscape (480px) */
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+  .banner-section {
+    height: 350px;
+  }
+  .banner-content h1 {
+    font-size: 24px;
+  }
+  .banner-content p {
+    font-size: 15px;
+  }
+}
+
+/* 6. ໜ້າຈໍ Phone Portrait ຂະໜາດນ້ອຍສຸດ (320px) */
+@media (max-width: 320px) {
+  .nav-menu ul {
+    gap: 15px;
+  }
+  .nav-menu ul li a {
+    font-size: 14px;
+  }
+  .main-content {
+    padding: 30px 15px;
+  }
+}
+.circle-contact-link {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: 75px;
+  height: 75px;
+  background: linear-gradient(135deg, #029941, #1c8801); /* ສີຟ້າໄລ່ສະເດດ */
+  color: #ffffff !important;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(24, 24, 24, 0.4);
+  z-index: 9999;
+  font-family: 'Noto Sans Lao', sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: grab;
+  user-select: none; /* ປ້ອງກັນບໍ່ໃຫ້ມັນຂຶ້ນແຖບໄຮໄລ້ສີຟ້າເວລາເຮົາກົດຍ້ຳໆ */
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.circle-contact-link:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.6);
+}
+
+.circle-contact-link:active {
+  cursor: grabbing;
+}
+/* ປຸ່ມກົດເປີດ Sidebar ຕັ້ງຄ່າ */
+.sidebar-toggle-btn {
+  position: fixed;
+  width: 65px;
+  height: 65px;
+  background: #ffffff;
+  color: rgb(0, 139, 19);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  cursor: pointer;
+  z-index: 9997;
+  transition: transform 0.2s;
+  user-select: none;
+}
+.sidebar-toggle-btn:hover { transform: scale(1.1); background: #0f172a; }
+
+/* ກ່ອງແຖບດ້ານຂ້າງ Sidebar */
+/* ກ່ອງແຖບດ້ານຂ້າງ Sidebar (ປ່ຽນໃຫ້ເລື່ອນຈາກຊ້າຍ) */
+.sidebar-container {
+  position: fixed;
+  top: 0;
+  left: -400px;       /* ເຊື່ອງໄວ້ທາງເບື້ອງຊ້າຍມືນອກຈໍ (ປ່ຽນຈາກ right ມາເປັນ left) */
+  width: 400px;
+  height: 100%;
+  background: #083000;
+  box-shadow: 5px 0 25px rgba(0, 0, 0, 0.3);
+  z-index: 10003;
+  transition: left 0.3s ease-in-out; /* ເອັບເຟັກເລື່ອນເຂົ້າ-ອອກ */
+  font-family: 'Noto Sans Lao', sans-serif;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ເມື່ອມີ Class "open" ໃຫ້ເລື່ອນອອກມາສະແດງຜົນທາງຊ້າຍ */
+.sidebar-container.open {
+  left: 0;            /* ເລື່ອນກັບເຂົ້າມາໃນໜ້າຈໍເບື້ອງຊ້າຍ (ປ່ຽນຈາກ right ມາເປັນ left) */
+}
+.sidebar-container.open { right: 0; }
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgb(255, 255, 255);
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ececec;
+}
+.sidebar-close-btn { font-size: 30px; color: #94a3b8; cursor: pointer; }
+.sidebar-close-btn:hover { color: #ef4444; }
+
+/* 👤 ສ່ວນຕົບແຕ່ງກ່ອງໂປຣຟາຍ */
+.sidebar-profile-box {
+  text-align: center;
+  padding: 20px 0;
+  color: rgb(255, 255, 255);
+}
+.profile-avatar {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffc609;
+  margin-bottom: 10px;
+}
+.sidebar-profile-box h4 { font-size: 16px; margin-bottom: 4px; }
+.sidebar-profile-box p { font-size: 12px; color: #ffc609; }
+
+/* 🔗 ລາຍການເມນູລິ້ງຄ໌ */
+.sidebar-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.sidebar-menu-links a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 12px 15px;
+  font-size: 15px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  text-align: left;
+}
+.sidebar-menu-links a:hover {
+  background: #ffffff;
+  color: #1fc3f5;
+  padding-left: 20px;
+}
+
+/* 🌐 ສ່ວນການເລືອກປ່ຽນພາສາ */
+.language-section {
+  padding: 10px 15px;
+  color: #94a3b8;
+  font-size: 14px;
+}
+.lang-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+.lang-btn {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ffffff;
+  background: transparent;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'Noto Sans Lao', sans-serif;
+  transition: all 0.2s;
+}
+.lang-btn.active {
+  background: #60a0ff;
+  border-color: #0284c7;
+}
+
+/* 🔒 ຕົບແຕ່ງ Pop-up ປ່ຽນລະຫັດຜ່ານ */
+.password-modal-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  display: none;
+  justify-content: center; align-items: center;
+  z-index: 10002;
+  font-family: 'Noto Sans Lao', sans-serif;
+}
+.password-modal-content {
+  background: white; padding: 25px; width: 90%; max-width: 360px;
+  border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+}
+.password-modal-content h4 { margin-bottom: 15px; color: #1e293b; }
+.pass-input {
+  width: 100%; padding: 10px; margin-bottom: 12px;
+  border: 1px solid #cbd5e1; border-radius: 6px; outline: none;
+}
+.pass-modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+.btn-cancel-pass { background: #cbd5e1; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; }
+.btn-save-pass { background: #ef4444; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; 
+}
+.modern-search {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#searchInput {
+    width: 350px;
+    padding: 12px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 50px; /* ເຮັດໃຫ້ມົນແບບທັນສະໄໝ */
+    outline: none;
+    transition: 0.3s;
+    font-size: 16px;
+}
+
+#searchInput:focus {
+    border-color: #27ae60; /* ສີຂຽວ KSD */
+    box-shadow: 0 0 10px rgba(39, 174, 96, 0.2);
+    width: 400px; /* ຂະຫຍາຍອອກເມື່ອຄລິກ */
+}
+
+.search-btn {
+    margin-left: -45px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+.footer-links {
+    display: flex; /* ໃຊ້ flexbox ເພື່ອຈັດລຽນ */
+    align-items: center;
+    gap: 15px; /* ໄລຍະຫ່າງລະຫວ່າງປຸ່ມ */
+    padding: 10px;
+    background-color: #f8f9fa;
+}
+
+.register-btn {
+    text-decoration: none;
+    background-color: #27ae60; /* ສີຂຽວ KSD */
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.register-btn:hover {
+    background-color: #219150;
+}
+.logout-btn {
+    text-decoration: none;
+    background-color: #e74c3c; /* ສີແດງ */
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+}
+.save-btn {
+    background-color: #06402b; /* ສີຂຽວເຂັ້ມຕາມຕີມເຈົ້າ */
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease; /* ເຮັດໃຫ້ການປ່ຽນແປງລຽນໄຫຼ */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* ເວລາເອົາເມົ້າຊີ້ໃສ່ (Hover) */
+.save-btn:hover {
+    background-color: #085a3c;
+    transform: translateY(-2px); /* ປຸ່ມລອຍຂຶ້ນເລັກນ້ອຍ */
+    box-shadow: 0 6px 8px rgba(0,0,0,0.2);
+}
+
+/* ເວລາກົດປຸ່ມ (Active) */
+.save-btn:active {
+    transform: translateY(0); /* ກົດລົງໄປ */
+    background-color: #043020;
+}
+/* ==========================================================================
+   Media Queries (ກຳນົດ Responsive ຕາມ Breakpoints ໃນຮູບພາບທີ່ໃຫ້ມາ)
+   ========================================================================== */
+
+/* 1. ໜ້າຈໍ Wide Screen (1440px ຂຶ້ນໄປ) */
+@media (min-width: 1440px) {
+  .header-container, .main-content, .footer-container {
+    max-width: 1400px;
+  }
+}
+
+/* 2. ໜ້າຈໍ Desktop (ຫຼຸດລົງມາຮອດຂະໜາດ 1280px ຫາ 1024px) */
+@media (max-width: 1280px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 3. ໜ້າຈໍ Large Tablet (ຫຼຸດລົງມາຮອດຂະໜາດ 1024px) */
+@media (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .banner-content h1 {
+    font-size: 32px;
+  }
+}
+
+/* 4. ໜ້າຈໍ Small Tablet ຫາ Large Phone Portrait (600px ຫາ 768px) */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+}

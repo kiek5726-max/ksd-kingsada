@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ລະບົບຫຼັງບ້ານ - ກິ່ງສະດາ Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;700&display=swap">
+  <style>
+    /* CSS ພິເສດສະເພາະໜ້າ Admin */
+    body { background-color: #f8fafc; font-family: 'Noto Sans Lao', sans-serif; margin: 0; padding: 0; }
+    .admin-container { display: flex; min-height: 100vh; }
+    .admin-sidebar { width: 260px; background: #0f172a; color: white; padding: 20px; }
+    .admin-sidebar h2 { font-size: 20px; margin-bottom: 30px; text-align: center; color: #38bdf8; }
+    .admin-nav button { width: 100%; background: transparent; border: none; color: #cbd5e1; padding: 12px 15px; text-align: left; font-size: 15px; cursor: pointer; border-radius: 8px; margin-bottom: 5px; font-family: 'Noto Sans Lao', sans-serif; }
+    .admin-nav button.active, .admin-nav button:hover { background: #1e293b; color: #38bdf8; }
+    .admin-main { flex: 1; padding: 30px; }
+    .admin-section { display: none; }
+    .admin-section.active { display: block; }
+    .card-dashboard { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: 500; }
+    .form-control { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
+    .btn-admin { background: #0284c7; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .btn-admin:hover { background: #0369a1; }
+    .btn-danger { background: #ef4444; }
+    .btn-danger:hover { background: #dc2626; }
+    .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
+    .admin-table th, .admin-table td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+    .admin-table th { background: #f1f5f9; }
+    .product-img-preview { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
+  </style>
+</head>
+<body>
+
+  <div class="admin-container">
+    <div class="admin-sidebar">
+      <h2>KSD Backend</h2>
+      <div class="admin-nav">
+        <button class="active" onclick="switchSection('dashboard')">📊 ແຜງຄວບຄຸມ</button>
+        <button onclick="switchSection('products')">📦 ຈັດການສິນຄ້າ</button>
+        <button onclick="switchSection('orders')">📜 ລາຍການສັ່ງຊື້</button>
+        <button onclick="window.location.href='index.html'">🌐 ກັບໄປໜ້າເວັບ</button>
+      </div>
+    </div>
+
+    <div class="admin-main">
+      
+      <div id="section-dashboard" class="admin-section active">
+        <h2>📊 ແຜງຄວບຄຸມ (Dashboard)</h2>
+        <div style="display: flex; gap: 20px; margin-top: 20px;">
+          <div class="card-dashboard" style="flex: 1; background: #e0f2fe;">
+            <h3>ສິນຄ້າທັງໝົດ</h3>
+            <p id="dash-prod-count" style="font-size: 28px; font-weight: bold; color: #0369a1;">0</p>
+          </div>
+          <div class="card-dashboard" style="flex: 1; background: #fef3c7;">
+            <h3>ອໍເດີ້ສັ່ງຊື້</h3>
+            <p id="dash-order-count" style="font-size: 28px; font-weight: bold; color: #b45309;">0</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="section-products" class="admin-section">
+        <h2>📦 ຈັດການສິນຄ້າ (Product Management)</h2>
+        
+        <div class="card-dashboard" style="margin-top: 20px;">
+          <h3>➕ ເພີ່ມສິນຄ້າໃໝ່</h3>
+          <form id="product-form" onsubmit="saveProduct(event)">
+            <input type="hidden" id="product-id">
+            <div class="form-group">
+              <label>ຊື່ສິນຄ້າ</label>
+              <input type="text" id="product-name" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>ລາຄາ (ກີບ)</label>
+              <input type="number" id="product-price" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>ລາຍລະອຽດສິນຄ້າ</label>
+              <input type="text" id="product-desc" class="form-control" required>
+            </div>
+            <div class="form-group">
+             <label>🖼️ ອັບໂຫລດຮູບສິນຄ້າ</label>
+             <input type="file" id="product-image-file" class="form-control" accept="image/*" onchange="previewUploadedImage()">
+  
+             <input type="hidden" id="product-image">
+  
+            <div style="margin-top: 10px;">
+             <img id="image-preview" src="" style="max-width: 120px; max-height: 120px; border-radius: 8px; display: none; object-fit: cover; border: 1px dashed #cbd5e1;">
+            </div>
+          </div>
+            <button type="submit" class="btn-admin">💾 ບັນທຶກສິນຄ້າ</button>
+            <button type="button" class="btn-admin btn-danger" onclick="clearProductForm()" style="background:#64748b;">ລ້າງຟອມ</button>
+          </form>
+        </div>
+
+        <h3>📋 ລາຍການສິນຄ້າປັດຈຸບັນ</h3>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ຮູບ</th>
+              <th>ຊື່ສິນຄ້າ</th>
+              <th>ລາຄາ</th>
+              <th>ລາຍລະອຽດ</th>
+              <th>ຈັດການ</th>
+            </tr>
+          </thead>
+          <tbody id="admin-product-list"></tbody>
+        </table>
+      </div>
+
+      <div id="section-orders" class="admin-section">
+        <h2>📜 ລາຍການສັ່ງຊື້ຈາກລູກຄ້າ (Orders)</h2>
+        <table class="admin-table" style="margin-top: 20px;">
+          <thead>
+            <tr>
+              <th>ວັນທີ/ເວລາ</th>
+              <th>ລາຍການສິນຄ້າ</th>
+              <th>ລາຄາລວມ</th>
+              <th>ຈັດການ</th>
+            </tr>
+          </thead>
+          <tbody id="admin-order-list"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ຟັງຊັນປ່ຽນແທັບເມນູ
+    function switchSection(sectionId) {
+      document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.admin-nav button').forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById('section-' + sectionId).classList.add('active');
+      event.target.classList.add('active');
+      loadAdminData();
+    }
+
+    // ກຽມຂໍ້ມູນເລີ່ມຕົ້ນ (Default Products) ຖ້າຫຼັງບ້ານຍັງຫວ່າງ
+    const defaultProducts = [
+      { id: 1, name: 'ນໍ້າໝາກພ້າວ ຊາດາ', price: 99000, desc: 'ນໍ້າໝາກພ້າວ ຫອມຫວານສົດຊື່ນ', image: '/xampp/htdocs/SOUKPASERT/Image/Coconut.jpeg' },
+      { id: 2, name: 'ນ້ຳມັນປາມກິ່ງສະດາ', price: 159000, desc: 'ບໍ່ວ່າຈະເປັນຜັດຈະທອດໄວ້ໃຈກິ່ງສະດ່າ', image: '/xampp/htdocs/SOUKPASERT/Image/ນ້ຳມັນ.jpeg' },
+      { id: 3, name: 'ນ້ຳອາໂລເວລ້າ', price: 99000, desc: 'ນ້ຳເຜິ້ງໝາກນາວພ້ອມເນື້ອຫວ້ານຫາງແຂ້ຫອມຫວານສົດຊື່ນ', image: '/xampp/htdocs/SOUKPASERT/Image/ອາໂລເວລາ.jpeg' }
+    ];
+
+    let products = JSON.parse(localStorage.getItem('backend_products')) || defaultProducts;
+    let orders = JSON.parse(localStorage.getItem('backend_orders')) || [];
+    
+    if(!localStorage.getItem('backend_products')) {
+      localStorage.setItem('backend_products', JSON.stringify(products));
+    }
+
+    // ຟັງຊັນໂຫຼດຂໍ້ມູນມາສະແດງຜົນໃນໜ້າ Admin
+    function loadAdminData() {
+      // Dashboard Counts
+      document.getElementById('dash-prod-count').innerText = products.length;
+      document.getElementById('dash-order-count').innerText = orders.length;
+
+      // Render Products List
+      const prodList = document.getElementById('admin-product-list');
+      prodList.innerHTML = '';
+      products.forEach(p => {
+        prodList.innerHTML += `
+          <tr>
+            <td><img src="${p.image}" class="product-img-preview"></td>
+            <td><strong>${p.name}</strong></td>
+            <td>${p.price.toLocaleString()} ກີບ</td>
+            <td>${p.desc}</td>
+            <td>
+              <button class="btn-admin" onclick="editProduct(${p.id})" style="padding: 5px 10px; font-size: 13px; background: #eab308;">ແກ້ໄຂ</button>
+              <button class="btn-admin btn-danger" onclick="deleteProduct(${p.id})" style="padding: 5px 10px; font-size: 13px;">ລຶບ</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      // Render Orders List
+      const orderList = document.getElementById('admin-order-list');
+      orderList.innerHTML = '';
+      if(orders.length === 0) {
+        orderList.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#64748b;">ບໍ່ມີລາຍການສັ່ງຊື້ເທື່ອ</td></tr>`;
+      } else {
+        orders.forEach((o, index) => {
+          orderList.innerHTML += `
+            <tr>
+              <td>${o.date}</td>
+              <td>${o.items}</td>
+              <td style="color:#ef4444; font-weight:bold;">${o.total.toLocaleString()} ກີບ</td>
+              <td>
+                <button class="btn-admin btn-danger" onclick="deleteOrder(${index})" style="padding: 5px 10px; font-size: 13px;">ລຶບອໍເດີ້</button>
+              </td>
+            </tr>
+          `;
+        });
+      }
+    }
+
+    // ຟັງຊັນບັນທຶກ (ເພີ່ມ ຫຼື ແກ້ໄຂ) ສິນຄ້າ
+    function saveProduct(e) {
+      e.preventDefault();
+      const id = document.getElementById('product-id').value;
+      const name = document.getElementById('product-name').value;
+      const price = parseFloat(document.getElementById('product-price').value);
+      const desc = document.getElementById('product-desc').value;
+      const image = document.getElementById('product-image').value;
+
+      if (id) {
+        // ແກ້ໄຂສິນຄ້າເກົ່າ
+        let index = products.findIndex(p => p.id == id);
+        products[index] = { id: parseInt(id), name, price, desc, image };
+        alert('ແກ້ໄຂຂໍ້ມູນສິນຄ້າສຳເລັດ!');
+      } else {
+        // ເພີ່ມສິນຄ້າໃໝ່
+        const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+        products.push({ id: newId, name, price, desc, image });
+        alert('ເພີ່ມສິນຄ້າໃໝ່ຮຽບຮ້ອຍ!');
+      }
+
+      localStorage.setItem('backend_products', JSON.stringify(products));
+      clearProductForm();
+      loadAdminData();
+    }
+
+    // ຟັງຊັນເລືອກສິນຄ້າມາແກ້ໄຂ
+    function editProduct(id) {
+      const p = products.find(prod => prod.id == id);
+      document.getElementById('product-id').value = p.id;
+      document.getElementById('product-name').value = p.name;
+      document.getElementById('product-price').value = p.price;
+      document.getElementById('product-desc').value = p.desc;
+      document.getElementById('product-image').value = p.image;
+  
+  // 🔥 ເພີ່ມ 3 ແຖວນີ້ເຂົ້າໄປ ເພື່ອໃຫ້ຮູບເກົ່າສະແດງໃນກ່ອງ Preview ຕອນກົດແກ້ໄຂ
+      const previewImg = document.getElementById('image-preview');
+      previewImg.src = p.image;
+      previewImg.style.display = 'block';
+
+      document.getElementById('product-form').scrollIntoView();
+    }
+
+    // ຟັງຊັນລຶບສິນຄ້າ
+    function deleteProduct(id) {
+      if(confirm('ເຈົ້າແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບສິນຄ້ານີ້?')) {
+        products = products.filter(p => p.id != id);
+        localStorage.setItem('backend_products', JSON.stringify(products));
+        loadAdminData();
+      }
+    }
+
+    // ຟັງຊັນລຶບອໍເດີ້
+    function deleteOrder(index) {
+      if(confirm('ຕ້ອງການລຶບປະຫວັດອໍເດີ້ສະບັບນີ້ບໍ່?')) {
+        orders.splice(index, 1);
+        localStorage.setItem('backend_orders', JSON.stringify(orders));
+        loadAdminData();
+      }
+    }
+
+    function clearProductForm() {
+      document.getElementById('product-id').value = '';
+      document.getElementById('product-form').reset();
+    }
+
+    // ໂຫຼດຂໍ້ມູນຄັ້ງທຳອິດ
+    loadAdminData();
+  </script>
+  <script>
+  // 1. ດຶງຂໍ້ມູນສິນຄ້າຈາກຫຼັງບ້ານມາສະແດງຜົນອັດຕະໂນມັດ
+  const defaultProductsList = [
+    { id: 1, name: 'ນໍ້າໝາກພ້າວ ຊາດາ', price: 99000, desc: 'ນໍ້າໝາກພ້າວ ຫອມหวานสดชื่น', image: '/xampp/htdocs/SOUKPASERT/Image/Coconut.jpeg' },
+    { id: 2, name: 'ນ້ຳມັນປາມກິ່ງສະດາ', price: 159000, desc: 'ບໍ່ວ່າຈະເປັນຜັດຈະທອດໄວ້ໃຈກິ່ງສະດ່າ', image: '/xampp/htdocs/SOUKPASERT/Image/ນ້ຳມັນ.jpeg' }
+  ];
+
+  function renderFrontProducts() {
+    const frontProducts = JSON.parse(localStorage.getItem('backend_products')) || defaultProductsList;
+    const gridContainer = document.getElementById('dynamic-product-grid');
+    if(!gridContainer) return;
+
+    gridContainer.innerHTML = '';
+    frontProducts.forEach(p => {
+      gridContainer.innerHTML += `
+        <div class="product-card">
+          <div class="product-img"><img src="${p.image}" alt="${p.name}"></div>
+          <div class="product-info">
+            <h3>${p.name}</h3>
+            <p class="price">${p.price.toLocaleString()} ກີບ</p>
+            <p class="desc">${p.desc}</p>
+            <button class="btn-buy" onclick="addToCart('${p.name}', ${p.price}, '${p.image}')">ເພີ່ມລົງກະຕ່າ</button>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  // 2. ປັບປຸງຟັງຊັນກົດສັ່ງຊື້ສິນຄ້າ (checkoutOrder) ໃຫ້ບັນທຶກຂໍ້ມູນເຂົ້າຫຼັງບ້ານ
+  function checkoutOrder() {
+    if (cart.length === 0) {
+      alert('ບໍ່ມີສິນຄ້າໃນກະຕ່າ!');
+      return;
+    }
+
+    // ລວບລວມລາຍການສິນຄ້າ
+    let itemsText = cart.map(item => `${item.name} (${item.quantity} ແກັດ)`).join(', ');
+    let totalMoney = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    let orderDate = new Date().toLocaleString('lo-LA');
+
+    // ດຶງອໍເດີ້ເກົ່າ ແລະ ເພີ່ມອໍເດີ້ໃໝ່ເຂົ້າໄປ
+    let currentOrders = JSON.parse(localStorage.getItem('backend_orders')) || [];
+    currentOrders.push({
+      date: orderDate,
+      items: itemsText,
+      total: totalMoney
+    });
+
+    // ບັນທຶກລົງ LocalStorage ຫຼັງບ້ານ
+    localStorage.setItem('backend_orders', JSON.stringify(currentOrders));
+
+    alert('🎉 ລະບົບໄດ້ສົ່ງລາຍການສັ່ງຊື້ຂອງທ່ານໄປຫຼັງບ້ານ ກິ່ງສະດາ ເປັນທີ່ຮຽບຮ້ອຍແລ້ວ!');
+    cart = [];
+    saveCart();
+    updateCartUI();
+    toggleCartPopup();
+  }
+
+  // ລັນຟັງຊັນສະແດງຜົນສິນຄ້າເມື່ອເປີດໜ້າເວັບ
+  renderFrontProducts();
+  // ຟັງຊັ່ນສະແດງຕົວຢ່າງຮູບ ແລະ ແປງຮູບພາບເປັນ Base64 ຕອນລູກຄ້າເລືອກໄຟລ໌
+function previewUploadedImage() {
+  const fileInput = document.getElementById('product-image-file');
+  const previewImg = document.getElementById('image-preview');
+  const hiddenInput = document.getElementById('product-image');
+  
+  const file = fileInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    
+    // ເມື່ອໂຫຼດໄຟລ໌ສຳເລັດ ໃຫ້ເອົາຄ່າທີ່ໄດ້ໄປໃສ່ໃນຊ່ອງ Hidden ແລະ ສະແດງຮູບຕົວຢ່າງ
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      previewImg.style.display = 'block';
+      hiddenInput.value = e.target.result; // ເກັບ Base64 String ໄວ້ບ່ອນນີ້
+    }
+    
+    reader.readAsDataURL(file); // ສັ່ງແປງໄຟລ໌ຮູບ
+  }
+}
+
+// ປັບປຸງຟັງຊັນລ້າງຟອມ (clearProductForm) ໃຫ້ລ້າງຮູບຕົວຢ່າງນຳ
+function clearProductForm() {
+  document.getElementById('product-id').value = '';
+  document.getElementById('product-form').reset();
+  
+  // ລ້າງຮູບຕົວຢ່າງອອກ
+  const previewImg = document.getElementById('image-preview');
+  previewImg.src = '';
+  previewImg.style.display = 'none';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ກ່ຽວກັບເຮົາ - ກິ່ງສະດາ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;700&display=swap">
+</head>
+<body>
+
+  <header class="site-header">
+  <div class="header-container">
+    <nav class="nav-menu">
+      <ul>
+        <li><a href="index.html">ໜ້າຫຼັກ</a></li>
+        <li><a href="products.html">ສິນຄ້າ</a></li>
+        <li><a href="services.html">ບໍລິການ</a></li>
+        <li><a href="about.html">ກ່ຽວກັບເຮົາ</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+  <main class="main-content">
+    <div class="section-title">
+      <h2>ກ່ຽວກັບພວກເຮົາ</h2>
+      <p>ທຳຄວາມຮູ້ຈັກກັບ ບໍລິສັດ ກິ່ງສະດາ ຂົນສົ່ງ ແລະ ການຄ້າ ຂາເຂົ້າ-ຂາອອກ ຈໍາກັດ</p>
+    </div>
+    
+    <div style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); max-width: 900px; margin: 0 auto; text-align: center; line-height: 1.8;">
+      <p style="font-size: 18px; color: #475569; margin-bottom: 30px;">
+        <strong>ກິ່ງສະດາ</strong> ເປັນບໍລິສັດທີ່ດຳເນີນທຸລະກິດດ້ານການຂົນສົ່ງ ແລະ ການຄ້າ ຂາເຂົ້າ-ຂາອອກ ຈໍາກັດ ພວກເຮົາມຸ່ງໝັ້ນທີ່ຈະເປັນຜູ້ນຳດ້ານການບໍລິການທີ່ມີຄຸນນະພາບ ແລະ ນຳສະເໜີຜະລິດຕະພັນທີ່ດີທີ່ສຸດແກ່ຜູ້ບໍລິໂພກ ເຊັ່ນ: ນ້ຳໝາກພ້າວຊາດາ, ນ້ຳມັນປາມ ແລະ ຜະລິດຕະພັນເພື່ອສຸຂະພາບອື່ນໆ.
+      </p>
+      <p style="color: #64748b;">
+        ເວັບໄຊທ໌ນີ້ຖືກພັດທະນາຂຶ້ນມາເພື່ອທົດສອບລະບົບການຈັດ Layout ແບບ Responsive ໃຫ້ສາມາດສະແດງຜົນໄດ້ຢ່າງສວຍງາມ ແລະ ຮອງຮັບການໃຊ້ງານໃນທຸກອຸປະກອນ ບໍ່ວ່າຈະເປັນ ຄອມພິວເຕີ, ແທັບເລັດ ຫຼື ໂທລະສັບມືຖື.
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-about">
+        <h3>ກ່ຽວກັບໂຄງການ</h3>
+        <p>ເວັບໄຊທ໌ນີ້ເປັນສ່ວນໜຶ່ງຂອງວິຊาຮຽນ ພັດທະນາຂຶ້ນມາເພື່ອທົດສອບການຈັດ Layout ແບບ Responsive Design ໃຫ້ຮອງຮັບທຸກອຸປະກອນ.</p>
+      </div>
+      <div class="footer-team">
+        <h3>DEV</h3>
+        <div class="team-grid">
+          <div class="member">
+            <img src="Image/Prosli.jpeg" alt="User Profile" class="profile-avatar">
+            <div class="member-info">
+              <p class="name">ທ້າວ ສຸກປະເສີດ ດວງບຸຜາ</p>
+              <p class="role">ເບີໂທ: +856 20 548 35745</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 ພັດທະນາໂດຍ ນ້ອງນັກສຶກສາ. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+</body>
+<div id="drag-contact-btn" class="circle-contact-link">
+    <span>ຕິດຕໍ່</span>
+  </div>
+
+  <script>
+    const dragBtn = document.getElementById("drag-contact-btn");
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    dragBtn.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - dragBtn.getBoundingClientRect().left;
+      offsetY = e.clientY - dragBtn.getBoundingClientRect().top;
+      dragBtn.style.cursor = "grabbing";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      
+      let x = e.clientX - offsetX;
+      let y = e.clientY - offsetY;
+
+      const maxX = window.innerWidth - dragBtn.offsetWidth;
+      const maxY = window.innerHeight - dragBtn.offsetHeight;
+      
+      x = Math.max(0, Math.min(x, maxX));
+      y = Math.max(0, Math.min(y, maxY));
+
+      dragBtn.style.left = x + "px";
+      dragBtn.style.top = y + "px";
+      dragBtn.style.right = "auto"; 
+      dragBtn.style.bottom = "auto";
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      dragBtn.style.cursor = "grab";
+    });
+
+    dragBtn.addEventListener("touchstart", (e) => {
+      isDragging = true;
+      const touch = e.touches[0];
+      offsetX = touch.clientX - dragBtn.getBoundingClientRect().left;
+      offsetY = touch.clientY - dragBtn.getBoundingClientRect().top;
+    });
+
+    document.addEventListener("touchmove", (e) => {
+      if (!isDragging) return;
+      const touch = e.touches[0];
+      let x = touch.clientX - offsetX;
+      let y = touch.clientY - offsetY;
+      
+      x = Math.max(0, Math.min(x, window.innerWidth - dragBtn.offsetWidth));
+      y = Math.max(0, Math.min(y, window.innerHeight - dragBtn.offsetHeight));
+
+      dragBtn.style.left = x + "px";
+      dragBtn.style.top = y + "px";
+      dragBtn.style.right = "auto";
+      dragBtn.style.bottom = "auto";
+    });
+
+    document.addEventListener("touchend", () => {
+      isDragging = false;
+    });
+
+    // 3. 🔥 ສ່ວນສຳຄັນ: ເມື່ອກົດ 2 ເທື່ອ (Double Click) ໃຫ້ລິ້ງຄ໌ໄປໜ້າ contact.html
+    dragBtn.addEventListener("dblclick", () => {
+      window.location.href = "contact.html";
+    });
+
+    // ຮອງຮັບການກົດ 2 ເທື່ອເທິງມືຖື (ເພາະມືຖືບໍ່ມີ Event dblclick ໂດຍກົງ)
+    let lastTap = 0;
+    dragBtn.addEventListener("touchend", (e) => {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      
+      // ຖ້າກົດຫ່າງກັນບໍ່ເກີນ 300 ມິນລິວິນາທີ (0.3 ວິນາທີ) ຖືວ່າເປັນການກົດ 2 ເທື່ອ
+      if (tapLength < 300 && tapLength > 0) {
+        window.location.href = "contact.html";
+      }
+      lastTap = currentTime;
+    });
+  </script>
+</html>

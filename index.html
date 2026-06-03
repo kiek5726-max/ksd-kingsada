@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KSD ກິ່ງສະດາ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;700&display=swap">
+</head>
+<body>
+<div class="sidebar-toggle-btn" onclick="toggleSidebar()">
+    ☰
+  </div>
+  <header class="site-header">
+    <div class="header-container">
+      <div class="logo">
+        <h2>KSD<span>ກິ່ງສະດາ</span></h2>
+      </div>
+      <div class="modern-search">
+    <input type="text" id="searchInput" placeholder="ຄົ້ນຫາສິນຄ້າ..." onkeyup="searchProduct()">
+    <button class="search-btn">🔍</button>
+</div>
+      <nav class="nav-menu">
+        <ul>
+      <li><a href="index.html">ໜ້າຫຼັກ</a></li>
+      <li><a href="products.html">ສິນຄ້າ</a></li>
+      <li><a href="services.html">ບໍລິການ</a></li>
+      <li><a href="about.html">ກ່ຽວກັບເຮົາ</a></li>
+      
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <section class="banner-section">
+    <div class="banner-overlay"></div>
+    <div class="banner-content">
+      <h1>ຍິນດີຕ້ອນຮັບເຂົ້າສູ່ກິ່ງສະດາ</h1>
+      <p>ຂົນສົ່ງ ແລະ ການຄ້າ ຂາເຂົ້າ-ຂາອອກ ຈໍາກັດ</p>
+    </div>
+  </section>
+
+  <main class="main-content">
+    <div class="section-title">
+      <h2>ສິນຄ້າແນະນໍາ</h2>
+      <p>ເລືອກຊື້ສິນຄ້າຄຸນນະພາບດີໃນລາຄາພິເສດ</p>
+    </div>
+    
+    <div class="product-grid" id="dynamic-product-grid">
+      <div class="product-card">
+        <div class="product-img">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-about">
+        <h3>ກ່ຽວກັບໂຄງການ</h3>
+        <p>ເວັບໄຊທ໌ນີ້ເປັນສ່ວນໜຶ່ງຂອງວິຊາຮຽນ ພັດທະນາຂຶ້ນມາເພື່ອທົດສອບການຈັດ Layout ແບບ Responsive Design ໃຫ້ຮອງຮັບທຸກອຸປະກອນ.</p>
+      </div>
+      
+      <div class="footer-team">
+        <h3>DEV</h3>
+        <div class="team-grid">
+          <div class="member">
+            <img src="Image/Prosli.jpeg" alt="User Profile" class="profile-avatar">
+            <div class="member-info">
+              <p class="name">MR. Soukpasert Douangboupha</p>
+              <p class="role">Phone Number: +856 20 548 35745</p>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 ພັດທະນາໂດຍ ນ້ອງນັກສຶກສາ. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+</body>
+<div id="drag-contact-btn" class="circle-contact-link">
+    <span>ຕິດຕໍ່</span>
+  </div>
+
+  <script>
+    const dragBtn = document.getElementById("drag-contact-btn");
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    dragBtn.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - dragBtn.getBoundingClientRect().left;
+      offsetY = e.clientY - dragBtn.getBoundingClientRect().top;
+      dragBtn.style.cursor = "grabbing";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      
+      let x = e.clientX - offsetX;
+      let y = e.clientY - offsetY;
+
+      const maxX = window.innerWidth - dragBtn.offsetWidth;
+      const maxY = window.innerHeight - dragBtn.offsetHeight;
+      
+      x = Math.max(0, Math.min(x, maxX));
+      y = Math.max(0, Math.min(y, maxY));
+
+      dragBtn.style.left = x + "px";
+      dragBtn.style.top = y + "px";
+      dragBtn.style.right = "auto"; 
+      dragBtn.style.bottom = "auto";
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      dragBtn.style.cursor = "grab";
+    });
+
+    dragBtn.addEventListener("touchstart", (e) => {
+      isDragging = true;
+      const touch = e.touches[0];
+      offsetX = touch.clientX - dragBtn.getBoundingClientRect().left;
+      offsetY = touch.clientY - dragBtn.getBoundingClientRect().top;
+    });
+
+    document.addEventListener("touchmove", (e) => {
+      if (!isDragging) return;
+      const touch = e.touches[0];
+      let x = touch.clientX - offsetX;
+      let y = touch.clientY - offsetY;
+      
+      x = Math.max(0, Math.min(x, window.innerWidth - dragBtn.offsetWidth));
+      y = Math.max(0, Math.min(y, window.innerHeight - dragBtn.offsetHeight));
+
+      dragBtn.style.left = x + "px";
+      dragBtn.style.top = y + "px";
+      dragBtn.style.right = "auto";
+      dragBtn.style.bottom = "auto";
+    });
+
+    document.addEventListener("touchend", () => {
+      isDragging = false;
+    });
+
+    // 3. 🔥 ສ່ວນສຳຄັນ: ເມື່ອກົດ 2 ເທື່ອ (Double Click) ໃຫ້ລິ້ງຄ໌ໄປໜ້າ contact.html
+    dragBtn.addEventListener("dblclick", () => {
+      window.location.href = "contact.html";
+    });
+
+    // ຮອງຮັບການກົດ 2 ເທື່ອເທິງມືຖື (ເພາະມືຖືບໍ່ມີ Event dblclick ໂດຍກົງ)
+    let lastTap = 0;
+    dragBtn.addEventListener("touchend", (e) => {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      
+      // ຖ້າກົດຫ່າງກັນບໍ່ເກີນ 300 ມິນລິວິນາທີ (0.3 ວິນາທີ) ຖືວ່າເປັນການກົດ 2 ເທື່ອ
+      if (tapLength < 300 && tapLength > 0) {
+        window.location.href = "contact.html";
+      }
+      lastTap = currentTime;
+    });
+  </script>
+  <div id="my-sidebar" class="sidebar-container">
+    <div class="sidebar-header">
+      <h3>ການຕັ້ງຄ່າບັນຊີ</h3>
+      <span class="sidebar-close-btn" onclick="toggleSidebar()">&times;</span>
+    </div>
+
+    <div class="sidebar-profile-box">
+      <img src="default.png" id="user-img" class="profile-avatar">
+      <h4 id="user-display-name">User Name</h4>
+      <p>ຍົດປັດຈຸບັນ: <span id="user-role-badge" style="font-weight: bold; padding: 2px 8px; border-radius: 4px;">...</span></p>
+    </div>
+
+    <div class="sidebar-menu-links">
+      <a href="profile.html">👤 ຂໍ້ມູນສ່ວນຕົວ (Profile)</a>
+      
+      <a href="cart.html">🛒 ກະຕ່າສິນຄ້າຂອງທ່ານ</a>
+      
+      <a href="#password" onclick="openPasswordModal()">🔒 ປ່ຽນລະຫັດຜ່ານ (Password)</a>
+      
+      <a href="#info" onclick="alert('ເວັບໄຊທ໌ ກິ່ງສະດາ Version 1.0.0 (Responsive Design)')">ℹ️ ຂໍ້ມູນລະບົບເພີ່ມເຕີມ</a>
+
+      <a href="admin.html" id="admin-menu" style="color: #f59e0b; display: none;">
+    ⚙️ ລະບົບຈັດການ (Admin)
+</a>
+      
+      <hr style="border: 0; border-top: 1px solid #ffffff; margin: 10px 0;">
+      
+      <div class="language-section">
+        <p>🌐 ປ່ຽນພາສາ (Language)</p>
+        <div class="lang-buttons">
+          <button onclick="changeLanguage('lo')" id="lang-lo" class="lang-btn active">ພາສາລາວ</button>
+          <button onclick="changeLanguage('en')" id="lang-en" class="lang-btn">English</button>
+        </div>
+      </div>
+      <div id="auth-container"></div>
+    </div>
+</footer>
+    </div>
+  </div>
+
+  <div id="password-modal" class="password-modal-bg">
+    <div class="password-modal-content">
+      <h4>🔒 ປ່ຽນລະຫັດຜ່ານໃໝ່</h4>
+      <input type="password" placeholder="ລະຫັດຜ່ານເກົ່າ..." class="pass-input">
+      <input type="password" placeholder="ລະຫັດຜ່ານໃໝ່..." class="pass-input">
+      <input type="password" placeholder="ຢືນຢັນລະຫັດຜ່ານໃໝ່..." class="pass-input">
+      <div class="pass-modal-btns">
+        <button onclick="closePasswordModal()" class="btn-cancel-pass">ຍົກເລີກ</button>
+        <button onclick="saveNewPassword()" class="btn-save-pass">ບັນທຶກ</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById("my-sidebar").classList.toggle("open");
+    }
+
+    // ລະບົບປ່ຽນພາສາ (ຕົວຢ່າງການສະແດງຜົນ)
+    function changeLanguage(lang) {
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      if (lang === 'lo') {
+        document.getElementById('lang-lo').classList.add('active');
+        alert('ປ່ຽນເປັນພາສາລາວຮຽບຮ້ອຍແລ້ວ');
+      } else {
+        document.getElementById('lang-en').classList.add('active');
+        alert('Language changed to English');
+      }
+    }
+
+    // ຟັງຊັນເປີດ-ປິດ ປ່ຽນລະຫັດຜ່ານ
+    function openPasswordModal() {
+      toggleSidebar(); // ປິດ sidebar ກ່ອນ
+      document.getElementById("password-modal").style.display = "flex";
+    }
+    function closePasswordModal() {
+      document.getElementById("password-modal").style.display = "none";
+    }
+    function saveNewPassword() {
+      alert("🎉 ປ່ຽນລະຫັດຜ່ານສຳເລັດແລ້ວ!");
+      closePasswordModal();
+    }
+
+    // ຄລິກພື້ນທີ່ຫວ່າງນອກ Sidebar ແລ້ວໃຫ້ປິດອັດຕະໂນມັດ
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("my-sidebar");
+      const toggleBtn = document.querySelector(".sidebar-toggle-btn");
+      if (!sidebar.contains(event.target) && !toggleBtn.contains(event.target)) {
+        sidebar.classList.remove("open");
+      }
+    });
+  </script>
+  <script>
+  // 1. ດຶງຂໍ້ມູນສິນຄ້າຈາກຫຼັງບ້ານມາສະແດງຜົນອັດຕະໂນມັດ
+  const defaultProductsList = [
+    { id: 1, name: 'ນໍ້າໝາກພ້າວ ຊາດາ', price: 99000, desc: 'ນໍ້າໝາກພ້າວ ຫອມหวานสดชื่น', image: '/xampp/htdocs/SOUKPASERT/Image/Coconut.jpeg' },
+    { id: 2, name: 'ນ້ຳມັນປາມກິ່ງສະດາ', price: 159000, desc: 'ບໍ່ວ່າຈະເປັນຜັດຈະທອດໄວ້ໃຈກິ່ງສະດ່າ', image: '/xampp/htdocs/SOUKPASERT/Image/ນ້ຳມັນ.jpeg' }
+  ];
+
+  function renderFrontProducts() {
+    const frontProducts = JSON.parse(localStorage.getItem('backend_products')) || defaultProductsList;
+    const gridContainer = document.getElementById('dynamic-product-grid');
+    if(!gridContainer) return;
+
+    gridContainer.innerHTML = '';
+    frontProducts.forEach(p => {
+      gridContainer.innerHTML += `
+        <div class="product-card">
+          <div class="product-img"><img src="${p.image}" alt="${p.name}"></div>
+          <div class="product-info">
+            <h3>${p.name}</h3>
+            <p class="price">${p.price.toLocaleString()} ກີບ</p>
+            <p class="desc">${p.desc}</p>
+            <button class="btn-buy" onclick="addToCart('${p.name}', ${p.price}, '${p.image}')">ເພີ່ມລົງກະຕ່າ</button>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  // 2. ປັບປຸງຟັງຊັນກົດສັ່ງຊື້ສິນຄ້າ (checkoutOrder) ໃຫ້ບັນທຶກຂໍ້ມູນເຂົ້າຫຼັງບ້ານ
+  function checkoutOrder() {
+    if (cart.length === 0) {
+      alert('ບໍ່ມີສິນຄ້າໃນກະຕ່າ!');
+      return;
+    }
+
+    // ລວບລວມລາຍການສິນຄ້າ
+    let itemsText = cart.map(item => `${item.name} (${item.quantity} ແກັດ)`).join(', ');
+    let totalMoney = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    let orderDate = new Date().toLocaleString('lo-LA');
+
+    // ດຶງອໍເດີ້ເກົ່າ ແລະ ເພີ່ມອໍເດີ້ໃໝ່ເຂົ້າໄປ
+    let currentOrders = JSON.parse(localStorage.getItem('backend_orders')) || [];
+    currentOrders.push({
+      date: orderDate,
+      items: itemsText,
+      total: totalMoney
+    });
+
+    // ບັນທຶກລົງ LocalStorage ຫຼັງບ້ານ
+    localStorage.setItem('backend_orders', JSON.stringify(currentOrders));
+
+    alert('🎉 ລະບົບໄດ້ສົ່ງລາຍການສັ່ງຊື້ຂອງທ່ານໄປຫຼັງບ້ານ ກິ່ງສະດາ ເປັນທີ່ຮຽບຮ້ອຍແລ້ວ!');
+    cart = [];
+    saveCart();
+    updateCartUI();
+    toggleCartPopup();
+  }
+  function addToCart(name, price, image) {
+    let cart = JSON.parse(localStorage.getItem('ksd_cart')) || [];
+    
+    // ເພີ່ມສິນຄ້າໃໝ່ເຂົ້າໄປໃນກະຕ່າ
+    cart.push({
+        name: name,
+        price: Number(price), // ບັງຄັບໃຫ້ເປັນຕົວເລກ (ປ້ອງກັນ NaN)
+        image: image,
+        quantity: 1
+    });
+    
+    localStorage.setItem('ksd_cart', JSON.stringify(cart));
+    alert(name + " ເພີ່ມລົງກະຕ່າແລ້ວ!");
+}
+// 1. ຕັ້ງຄ່າຍົດເລີ່ມຕົ້ນໃຫ້ເປັນ member (ສະມາຊິກທົ່ວໄປ) ສາສັບຜູ້ໃຊ້ທຸກຄົນທີ່ເປີດເວັບຂຶ້ນມາໃໝ່
+let currentUserRole = localStorage.getItem('user_role') || 'member';
+
+function updateRoleUI() {
+  const roleBadge = document.getElementById('user-role-badge');
+  const adminLink = document.querySelector('a[href="admin.html"]');
+  
+  if (currentUserRole === 'admin') {
+    roleBadge.innerText = 'ແອັດມິນ (Admin)';
+    roleBadge.style.background = '#ef4444'; // ຍົດແອັດມິນສີແດງ
+    roleBadge.style.color = 'white';
+    if(adminLink) adminLink.style.display = 'block'; // ແອັດມິນເທົ່ານັ້ນທີ່ຈະເຫັນເມນູຫຼັງບ້ານ
+  } else {
+    roleBadge.innerText = 'ສະມາຊິກທົ່ວໄປ (Member)';
+    roleBadge.style.background = '#10b981'; // ຜູ້ໃຊ້ທົ່ວໄປຈະໄດ້ສີຂຽວ
+    roleBadge.style.color = 'white';
+    if(adminLink) adminLink.style.display = 'none'; // ເຊື່ອງເມນູຫຼັງບ້ານບໍ່ໃຫ້ຄົນທົ່ວໄປເຫັນ
+  }
+}
+
+// 2. 🔥 ຟັງຊັນລັບສະເພາະ Developer ເທົ່ານັ້ນທີ່ຈະຮູ້ (ຄົນທົ່ວໄປຈະບໍ່ມີປຸ່ມໃຫ້ກົດ)
+function setRoleByDev(roleName) {
+  if (roleName === 'admin' || roleName === 'member') {
+    localStorage.setItem('user_role', roleName);
+    currentUserRole = roleName;
+    updateRoleUI();
+    console.log('🎯 Dev ໄດ້ປ່ຽນຍົດເປັນ: ' + roleName + ' ສຳເລັດແລ້ວ!');
+    alert('🎯 ລະບົບ Dev: ປ່ຽນຍົດເປັນ ' + roleName + ' ຮຽບຮ້ອຍ!');
+  } else {
+    console.log('❌ ໃສ່ຊື່ຍົດບໍ່ຖືກຕ້ອງ! (ໃຫ້ໃສ່ admin ຫຼື member)');
+  }
+}
+function searchProduct() {
+    let input = document.getElementById('searchInput').value.toLowerCase();
+    let productGrid = document.getElementById('dynamic-product-grid');
+    let cards = productGrid.getElementsByClassName('product-card');
+
+    for (let i = 0; i < cards.length; i++) {
+        let name = cards[i].innerText.toLowerCase();
+        // ໃຊ້ display: flex/none ເພື່ອໃຫ້ Layout ຍັງງາມຢູ່
+        cards[i].style.display = name.includes(input) ? "block" : "none";
+    }
+}
+function saveData() {
+    // ບັນທຶກຂໍ້ມູນລົງ LocalStorage
+    localStorage.setItem('user_name', document.getElementById('nameInput').value);
+    localStorage.setItem('user_role', 'member'); // ຍົດເລີ່ມຕົ້ນ
+    // ... ບັນທຶກ ອາຍຸ, ເບີໂທ, ທີ່ຢູ່ ເຊັ່ນດຽວກັນ ...
+    
+    // ຖ້າອັບໂຫຼດຮູບ ໃຫ້ບັນທຶກເປັນ Base64
+    const file = document.getElementById('imageInput').files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            localStorage.setItem('user_image', e.target.result);
+            window.location.href = 'index.html'; // ກັບໄປໜ້າຫຼັກ
+        };
+        reader.readAsDataURL(file);
+    } else {
+        window.location.href = 'index.html';
+    }
+}
+// ໃນໜ້າ profile.html
+function initProfilePage() {
+    const name = localStorage.getItem('user_name');
+    if (name) {
+        // ສະແດງຂໍ້ມູນທີ່ບັນທຶກໄວ້
+        document.getElementById('display-section').style.display = 'block';
+        document.getElementById('edit-section').style.display = 'none';
+        
+        // ຕື່ມຂໍ້ມູນໃສ່ບ່ອນສະແດງຜົນ
+        document.getElementById('display-name').innerText = name;
+    } else {
+        // ຖ້າຍັງບໍ່ມີຂໍ້ມູນ, ເປີດໂໝດກອກຂໍ້ມູນເລີຍ
+        document.getElementById('display-section').style.display = 'none';
+        document.getElementById('edit-section').style.display = 'block';
+    }
+}
+function saveData() {
+    // ... ຂໍ້ມູນອື່ນໆ ...
+    localStorage.setItem('user_role', document.getElementById('roleInput').value);
+    
+    // ... ຫຼັງຈາກບັນທຶກແລ້ວ ໃຫ້ກັບໄປໜ້າຫຼັກ ...
+    window.location.href = 'index.html';
+}
+function saveData() {
+    const name = document.getElementById('nameInput').value;
+    let role = 'member'; // ຕັ້ງໃຫ້ທຸກຄົນເປັນ Member ໄວ້ກ່ອນ
+
+    // ຖ້າຊື່ແມ່ນຊື່ຂອງເຈົ້າ, ເຖິງຈະສະໝັກໃໝ່ກໍໃຫ້ເປັນ Admin
+    if (name === 'SOUKPASERT') {
+        role = 'admin';
+    }
+
+    localStorage.setItem('user_role', role);
+    window.location.href = 'index.html';
+}
+function previewImage(event) {
+        const reader = new FileReader();
+        const imagePreview = document.getElementById('imagePreview');
+        reader.onload = function() {
+            imagePreview.src = reader.result;
+            imagePreview.style.display = 'block';
+        }
+        if(event.target.files[0]) {
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
+    function saveAllData() {
+    const btn = document.querySelector('.save-btn');
+    
+    // ເພີ່ມລູກຫຼິ້ນ: ປ່ຽນຂໍ້ຄວາມ ແລະ ເຮັດໃຫ້ປຸ່ມກົດບໍ່ໄດ້ຊົ່ວຄາວ
+    btn.innerText = "ກຳລັງບັນທຶກ...";
+    btn.style.opacity = "0.7";
+    btn.disabled = true;
+
+    // ເອົາໂຄ້ດບັນທຶກທີ່ເຮົາເຮັດໄວ້ກ່ອນໜ້ານີ້ມາໃສ່...
+    localStorage.setItem('user_name', document.getElementById('nameInput').value);
+    // ... (ບັນທຶກຂໍ້ມູນອື່ນໆ) ...
+
+    // ຫຼັງຈາກບັນທຶກສຳເລັດ 3 ວິນາທີ (ຫຼື ປ່ຽນໜ້າ)
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, 1000);
+}
+function checkAdminStatus(username) {
+    if (adminList.includes(username)) {
+        localStorage.setItem('user_role', 'admin');
+    } else {
+        localStorage.setItem('user_role', 'member');
+    }
+}
+function addProduct(name, price) {
+    const db = getDatabase();
+    // ບັນທຶກລົງ Path 'products'
+    set(ref(db, 'products/' + Date.now()), {
+        name: name,
+        price: price
+    });
+}
+// ຟັງຊັນກວດສອບສະຖານະລັອກອິນ
+
+
+// ລັນຟັງຊັນເມື່ອໜ້າເວັບໂຫຼດສຳເລັດ
+checkAuthStatus();
+
+// ລັນລະບົບ UI ຍົດຕອນເປີດໜ້າເວັບ
+updateRoleUI();
+  // ລັນຟັງຊັນສະແດງຜົນສິນຄ້າເມື່ອເປີດໜ້າເວັບ
+  renderFrontProducts();
+</script>
+<script>
+    // ວາງໂຄ້ດທີ່ເຈົ້າເຫັນໃນຮູບໃສ່ບ່ອນນີ້
+    window.onload = function() {
+        const savedName = localStorage.getItem('user_name');
+        const savedImage = localStorage.getItem('user_image');
+
+        if (savedName) {
+            document.getElementById('user-display-name').innerText = savedName;
+            
+            // ກວດສອບກ່ອນວ່າ element ມີຢູ່ຈິງບໍ່ເພື່ອບໍ່ໃຫ້ເກີດ Error
+            const imgElement = document.getElementById('user-img');
+            if (imgElement) {
+                imgElement.src = savedImage || 'default.png'; // ຖ້າບໍ່ມີຮູບໃຫ້ໃຊ້ default
+            }
+            
+            const profileSection = document.getElementById('user-profile-section');
+            if (profileSection) {
+                profileSection.style.display = 'block';
+            }
+        }
+    };
+</script>
+<script>
+window.onload = function() {
+    // ດຶງຍົດມາຈາກ LocalStorage
+    const role = localStorage.getItem('user_role'); 
+    const adminMenu = document.getElementById('admin-menu');
+    const roleBadge = document.getElementById('user-role-badge'); // ບ່ອນສະແດງຍົດ (Member/Admin)
+    const adminList = ["KXE13", "ADMIN_01", "BOSS"];
+
+    // 1. ສະແດງຍົດ (ຖ້າເຈົ້າມີ ID ນີ້ໃນ HTML)
+    if (roleBadge) {
+        roleBadge.innerText = (role === 'admin') ? '👑 Admin' : '👤 Member';
+    }
+
+    // 2. ເງື່ອນໄຂເຊື່ອງ/ສະແດງເມນູ Admin
+    if (adminMenu) {
+        if (role === 'admin') {
+            adminMenu.style.display = 'block'; // ຖ້າເປັນ Admin ໃຫ້ສະແດງ
+        } else {
+            adminMenu.style.display = 'none';  // ຖ້າເປັນ Member ໃຫ້ເຊື່ອງ
+        }
+    }
+};
+</script>
+<script>
+    window.onload = function() {
+        const role = localStorage.getItem('user_role'); 
+        const adminMenu = document.getElementById('admin-menu');
+        const roleBadge = document.getElementById('user-role-badge');
+        const userName = localStorage.getItem('user_name'); // ດຶງຊື່ມາສະແດງນຳ
+        const userImg = localStorage.getItem('user_image'); // ດຶງຮູບມາສະແດງນຳ
+
+        // 1. ສະແດງຊື່ ແລະ ຮູບ (ຖ້າມີ)
+        if (userName) document.getElementById('user-display-name').innerText = userName;
+        if (userImg) document.getElementById('user-img').src = userImg;
+
+        // 2. ສະແດງຍົດ
+        if (roleBadge) {
+            roleBadge.innerText = (role === 'admin') ? '👑 Admin' : '👤 Member';
+        }
+
+        // 3. ເງື່ອນໄຂການສະແດງ/ເຊື່ອງເມນູ Admin
+        if (adminMenu) {
+            if (role === 'admin') {
+                adminMenu.style.display = 'block'; 
+            } else {
+                adminMenu.style.display = 'none';  
+            }
+        }
+    };
+</script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyB_JcmHbO_kOy9v3rvstiqDoIgBYndRfZI",
+    authDomain: "ksd-kingsada.firebaseapp.com",
+    projectId: "ksd-kingsada",
+    storageBucket: "ksd-kingsada.firebasestorage.app",
+    messagingSenderId: "984977062231",
+    appId: "1:984977062231:web:39ebfc780ebc875dec2612",
+    measurementId: "G-VHHS1CX4S2"
+  };
+  const db = getDatabase();
+const productsRef = ref(db, 'products');
+
+onValue(productsRef, (snapshot) => {
+    const data = snapshot.val();
+    // ຂໍ້ມູນມາແລ້ວ! ເຈົ້າສາມາດເອົາຂໍ້ມູນນີ້ໄປສະແດງໃນຕາຕະລາງໄດ້ເລີຍ
+    console.log("ສິນຄ້າໃໝ່:", data);
+});
+function displayResults(productList) {
+    const container = document.getElementById('searchResults');
+    container.innerHTML = ''; // ລຶບຂອງເກົ່າອອກກ່ອນ
+
+    productList.forEach(item => {
+        // ສ້າງ HTML ສິນຄ້າແຕ່ລະອັນ
+        const div = document.createElement('div');
+        div.className = 'product-item';
+        div.innerHTML = `
+            <h3>${item.name}</h3>
+            <p>ລາຄາ: ${item.price} ກີບ</p>
+        `;
+        container.appendChild(div);
+    });
+}
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+<div id="searchResults" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 20px;">
+    </div>
+  </body>
+</html>
