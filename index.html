@@ -17,7 +17,7 @@
         <h2>KSD<span>ກິ່ງສະດາ</span></h2>
       </div>
       <div class="modern-search">
-    <input type="text" id="searchInput" placeholder="ຄົ້ນຫາສິນຄ້າ..." onkeyup="searchProduct()">
+    <input type="text" id="searchInput" placeholder="ຄົ້ນຫາສິນຄ້າຂອງທ່ານ..." onkeyup="searchProduct()">
     <button class="search-btn">🔍</button>
 </div>
       <nav class="nav-menu">
@@ -458,14 +458,6 @@ function checkAdminStatus(username) {
         localStorage.setItem('user_role', 'member');
     }
 }
-function addProduct(name, price) {
-    const db = getDatabase();
-    // ບັນທຶກລົງ Path 'products'
-    set(ref(db, 'products/' + Date.now()), {
-        name: name,
-        price: price
-    });
-}
 // ຟັງຊັນກວດສອບສະຖານະລັອກອິນ
 
 
@@ -550,52 +542,49 @@ window.onload = function() {
     };
 </script>
 <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { getDatabase } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  // ເອົາ Code ທີ່ກັອບປີ້ມາ ວາງໃສ່ບ່ອນນີ້:
   const firebaseConfig = {
-    apiKey: "AIzaSyB_JcmHbO_kOy9v3rvstiqDoIgBYndRfZI",
-    authDomain: "ksd-kingsada.firebaseapp.com",
-    projectId: "ksd-kingsada",
-    storageBucket: "ksd-kingsada.firebasestorage.app",
-    messagingSenderId: "984977062231",
-    appId: "1:984977062231:web:39ebfc780ebc875dec2612",
-    measurementId: "G-VHHS1CX4S2"
+    apiKey: "AIzaSy...",
+    authDomain: "your-project.firebaseapp.com",
+    databaseURL: "https://your-project.firebaseio.com",
+    projectId: "your-project",
+    storageBucket: "your-project.appspot.com",
+    messagingSenderId: "1234567890",
+    appId: "1:1234567890:web:abcdef"
   };
-  const db = getDatabase();
-const productsRef = ref(db, 'products');
-
-onValue(productsRef, (snapshot) => {
-    const data = snapshot.val();
-    // ຂໍ້ມູນມາແລ້ວ! ເຈົ້າສາມາດເອົາຂໍ້ມູນນີ້ໄປສະແດງໃນຕາຕະລາງໄດ້ເລີຍ
-    console.log("ສິນຄ້າໃໝ່:", data);
-});
-function displayResults(productList) {
-    const container = document.getElementById('searchResults');
-    container.innerHTML = ''; // ລຶບຂອງເກົ່າອອກກ່ອນ
-
-    productList.forEach(item => {
-        // ສ້າງ HTML ສິນຄ້າແຕ່ລະອັນ
-        const div = document.createElement('div');
-        div.className = 'product-item';
-        div.innerHTML = `
-            <h3>${item.name}</h3>
-            <p>ລາຄາ: ${item.price} ກີບ</p>
-        `;
-        container.appendChild(div);
-    });
-}
-
-  // Initialize Firebase
+  // ເລີ່ມຕົ້ນການເຊື່ອມຕໍ່ Firebase
   const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+  const db = getDatabase(app);
+  
+  console.log("Firebase ເຊື່ອມຕໍ່ສຳເລັດແລ້ວ!");
 </script>
-<div id="searchResults" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 20px;">
-    </div>
+<div id="product-container" style="display: flex; flex-wrap: wrap; gap: 20px;"></div>
+
+<script type="module">
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+    const db2 = getDatabase();
+    const productsRef = ref(db2, 'products'); // ຂໍ້ມູນສິນຄ້າຢູ່ໃນ Firebase ຕ້ອງມີ Path ຊື່ 'products'
+
+    onValue(productsRef, (snapshot) => {
+        const data = snapshot.val();
+        const container = document.getElementById('product-container');
+        container.innerHTML = ""; // ລ້າງຂໍ້ມູນເກົ່າອອກກ່ອນ
+
+        if (data) {
+            Object.values(data).forEach(product => {
+                container.innerHTML += `
+                    <div style="border: 1px solid #ccc; padding: 10px; width: 200px;">
+                        <h3>${product.name}</h3>
+                        <p>ລາຄາ: ${product.price} ກີບ</p>
+                    </div>
+                `;
+            });
+        }
+    });
+</script>
   </body>
 </html>
