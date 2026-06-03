@@ -213,9 +213,6 @@
         <button onclick="closePasswordModal()" class="btn-cancel-pass">ຍົກເລີກ</button>
         <button onclick="saveNewPassword()" class="btn-save-pass">ບັນທຶກ</button>
       </div>
-    </div>
-  </div>
-
   <script>
     function toggleSidebar() {
       document.getElementById("my-sidebar").classList.toggle("open");
@@ -543,48 +540,44 @@ window.onload = function() {
 </script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-  import { getDatabase } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
-  // ເອົາ Code ທີ່ກັອບປີ້ມາ ວາງໃສ່ບ່ອນນີ້:
+  // 1. ໃສ່ຄ່າທີ່ແທ້ຈິງຈາກ Firebase Console ຂອງເຈົ້າ
   const firebaseConfig = {
-    apiKey: "AIzaSy...",
-    authDomain: "your-project.firebaseapp.com",
-    databaseURL: "https://your-project.firebaseio.com",
-    projectId: "your-project",
-    storageBucket: "your-project.appspot.com",
-    messagingSenderId: "1234567890",
-    appId: "1:1234567890:web:abcdef"
-  };
-  // ເລີ່ມຕົ້ນການເຊື່ອມຕໍ່ Firebase
+  apiKey: "AIzaSyB_JcmHbO_kOy9v3rvstiqDoIgBYndRfZI",
+  authDomain: "ksd-kingsada.firebaseapp.com",
+  databaseURL: "https://ksd-kingsada-default-rtdb.firebaseio.com",
+  projectId: "ksd-kingsada",
+  storageBucket: "ksd-kingsada.firebasestorage.app",
+  messagingSenderId: "984977062231",
+  appId: "1:984977062231:web:39ebfc780ebc875dec2612",
+  measurementId: "G-VHHS1CX4S2"
+};
+
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   
-  console.log("Firebase ເຊື່ອມຕໍ່ສຳເລັດແລ້ວ!");
-</script>
-<div id="product-container" style="display: flex; flex-wrap: wrap; gap: 20px;"></div>
+  // 2. ດຶງຂໍ້ມູນຈາກ Path 'products' ໂດຍໃຊ້ db ຕົວດຽວກັນ
+  const productsRef = ref(db, 'products');
 
-<script type="module">
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+  onValue(productsRef, (snapshot) => {
+      const data = snapshot.val();
+      const container = document.getElementById('product-container');
+      if (!container) return; // ກັນ Error ຖ້າຫາ element ບໍ່ພົບ
+      
+      container.innerHTML = ""; 
 
-    const db2 = getDatabase();
-    const productsRef = ref(db2, 'products'); // ຂໍ້ມູນສິນຄ້າຢູ່ໃນ Firebase ຕ້ອງມີ Path ຊື່ 'products'
-
-    onValue(productsRef, (snapshot) => {
-        const data = snapshot.val();
-        const container = document.getElementById('product-container');
-        container.innerHTML = ""; // ລ້າງຂໍ້ມູນເກົ່າອອກກ່ອນ
-
-        if (data) {
-            Object.values(data).forEach(product => {
-                container.innerHTML += `
-                    <div style="border: 1px solid #ccc; padding: 10px; width: 200px;">
-                        <h3>${product.name}</h3>
-                        <p>ລາຄາ: ${product.price} ກີບ</p>
-                    </div>
-                `;
-            });
-        }
-    });
+      if (data) {
+          Object.values(data).forEach(product => {
+              container.innerHTML += `
+                  <div style="border: 1px solid #ccc; padding: 10px; width: 200px;">
+                      <h3>${product.name || 'ບໍ່ມີຊື່'}</h3>
+                      <p>ລາຄາ: ${product.price ? product.price.toLocaleString() : '0'} ກີບ</p>
+                  </div>
+              `;
+          });
+      }
+  });
 </script>
   </body>
 </html>

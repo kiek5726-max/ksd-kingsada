@@ -200,30 +200,48 @@
         price: price
     });
 }
-
     // ລັນລະບົບສະແດງຜົນສິນຄ້າທັນທີຕອນເປີດໜ້າ products.html
     renderFrontProducts();
   </script>
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-  import { getDatabase } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+  <div id="product-container" style="display: flex; flex-wrap: wrap; gap: 20px;">
+    </div>
 
-  // ເອົາ Code ທີ່ກັອບປີ້ມາ ວາງໃສ່ບ່ອນນີ້:
-  const firebaseConfig = {
-    apiKey: "AIzaSy...",
-    authDomain: "your-project.firebaseapp.com",
-    databaseURL: "https://your-project.firebaseio.com",
-    projectId: "your-project",
-    storageBucket: "your-project.appspot.com",
-    messagingSenderId: "1234567890",
-    appId: "1:1234567890:web:abcdef"
-  };
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
-  // ເລີ່ມຕົ້ນການເຊື່ອມຕໍ່ Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  
-  console.log("Firebase ເຊື່ອມຕໍ່ສຳເລັດແລ້ວ!");
+    // ໃສ່ Firebase Config ຂອງເຈົ້າ (ເອົາມາຈາກ Project Settings ໃນ Firebase Console)
+    const firebaseConfig = {
+        apiKey: "AIzaSyB_JcmHbO_k0y9v3rvstiqDoIgBYndRfZI",
+        authDomain: "ksd-kingsada.firebaseapp.com",
+        databaseURL: "https://ksd-kingsada-default-rtdb.firebaseio.com",
+        projectId: "ksd-kingsada",
+        storageBucket: "ksd-kingsada.appspot.com",
+        messagingSenderId: "984977062231",
+        appId: "1:984977062231:web:39ebfc780ebc875dec2612"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const productsRef = ref(db, 'products');
+
+    // ຄຳສັ່ງ onValue ນີ້ແຫຼະທີ່ເຮັດໃຫ້ມັນເປັນ Real-time
+    onValue(productsRef, (snapshot) => {
+        const data = snapshot.val();
+        const container = document.getElementById('product-container');
+        container.innerHTML = ""; // ລ້າງຂໍ້ມູນເກົ່າອອກກ່ອນ
+
+        if (data) {
+            Object.values(data).forEach(product => {
+                container.innerHTML += `
+                    <div style="border: 1px solid #ccc; padding: 15px; width: 200px; border-radius: 8px;">
+                        <h3>${product.name || 'ບໍ່ມີຊື່'}</h3>
+                        <p>ລາຄາ: ${product.price ? product.price.toLocaleString() : '0'} ກີບ</p>
+                    </div>
+                `;
+            });
+        }
+    });
 </script>
   </body>
 </html>
